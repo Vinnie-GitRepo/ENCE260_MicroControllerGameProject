@@ -1,9 +1,3 @@
-/*
-# File:   Animations.c
-# Author: Group417
-# Date:   10 OCT 2018
-# Descr:  Animations on the LED board
-*/
 #include "Animations.h"
 #include "pio.h"
 #include "tinygl.h"
