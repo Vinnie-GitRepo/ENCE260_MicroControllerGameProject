@@ -8,7 +8,7 @@
 #include "Animations.h"
 
 #define LOOP_RATE 500
-#define PACER_RATE 500
+#define PACER_RATE 1000
 #define MESSAGE_RATE 10
 
 /* makes sure the right character is displayed through a buffer.
@@ -25,6 +25,8 @@ void display_character (char character)
 /* What runs the game */
 int main (void)
 {
+	int Wins = 0;
+	int Loses = 0;
 	/* The RPS character that displays on the LED screen while also being what is sent to the other UCFK4 */
     char character = 'R';
 	/* The char that waits for then holds the character sent by the other UCFK4 */
@@ -48,13 +50,14 @@ int main (void)
     pacer_init (PACER_RATE);
 
 	/*While loop that will stop when you select rock, paper or scissors (R, P or S) through pushing down the navswitch */
+	while(Wins != 5 and
     while (1)
     {
 		/*Wait times for things to update */
         pacer_wait ();
         tinygl_update ();
         navswitch_update ();
-		display_character (character);
+	display_character (character);
         /* setting up to go up characters and down to go down characters */
         if (navswitch_push_event_p (NAVSWITCH_NORTH)) {
 			
@@ -85,10 +88,12 @@ int main (void)
 		}
 		
 		/*The real start to the previous while loop */
-		FillBoard();
-		tinygl_update();
-		ir_uart_putc(character);
 		
+		tinygl_update();
+		navswitch_update ();
+		ir_uart_putc(character);
+		FillBoard();		
+
 		if(ir_uart_read_ready_p()) {
 			Resv = ir_uart_getc();
 		}
@@ -98,29 +103,28 @@ int main (void)
 			ir_uart_putc(character);
 			ClearBoard();
 			tinygl_clear();
-			tinygl_update ();
+			tinygl_update();
 			break;
 		} 
+		/*
+		if(navswitch_push_event_p (NAVSWITCH_PUSH)) {
+			break;
+		} */
 	}
 	
 	/*This is all for setting up and checking who won.
-	printing out either 'You Win' or 'You Lose' */
+	printing out either 'W' or 'L' */
 	Won = WhoWon(character, Resv);
-	tinygl_text_mode_set (TINYGL_TEXT_MODE_SCROLL);
-	tinygl_init (LOOP_RATE);
-	tinygl_font_set (&font5x7_1);
-	tinygl_text_speed_set (MESSAGE_RATE);
 	if(Won == 1) {
-			tinygl_text("YOU WON\0");
+			display_character ('W');
 		} else {
-			tinygl_text("YOU LOSE\0");
+			display_character ('L');
 	}
 
 	/* This loop just needs to be there for the messages to play there full way through. */
 	while(1) {
 		tinygl_update();
-		pacer_wait();
-			
+		ir_uart_putc(character);
 	}
 
 	

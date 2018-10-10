@@ -58,16 +58,18 @@ pacer.o: ../../../utils/pacer.c ../../../drivers/avr/system.h ../../../drivers/a
 tinygl.o: ../../../utils/tinygl.c ../../../drivers/avr/system.h ../../../drivers/display.h ../../../utils/font.h ../../../utils/tinygl.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-Tables.o: Tables.c Tables.h
+Tables.o: Tables.c Tables.h 
 	$(CC) -c $(CFLAGS) $< -o $@
 
 Animations.o: Animations.c Animations.h  ../../../drivers/avr/pio.h ../../../drivers/avr/system.h ../../../utils/tinygl.h
 	$(CC) -c $(CFLAGS) $< -o $@ 
 
+ 
+
 
 
 # Link: create ELF output file from object files.
-Game.out: Game.o ir_uart.o pio.o prescale.o system.o timer.o timer0.o usart1.o display.o ledmat.o navswitch.o font.o pacer.o tinygl.o Tables.o Animations.o
+Game.out: Game.o ir_uart.o pio.o prescale.o system.o timer.o timer0.o usart1.o display.o ledmat.o navswitch.o font.o pacer.o tinygl.o Tables.o Animations.o 
 	$(CC) $(CFLAGS) $^ -o $@ -lm
 	$(SIZE) $@
 

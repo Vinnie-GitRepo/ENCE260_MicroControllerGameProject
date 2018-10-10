@@ -1,10 +1,3 @@
-/*
-# File:   Tables.c
-# Author: Group417
-# Date:   10 OCT 2018
-# Descr:  Switch cases for the game.
-*/
-
 #include "Tables.h"
 
 /* Gets the Symbol for paper scisosrs or rock, from an int mod 3 */
