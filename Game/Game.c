@@ -37,7 +37,7 @@ int main (void)
     /* 1 is if this UCFK4 won and if it ends with 0, then UCFK4 lost */
     int Won = 0;
 
-    /* 0 if the animation is still going, 1 for when it finishes*/
+    /* 0 if the isAnimating is still going, 1 for when it finishes*/
     int isAnimating = 0;
 
     /* Starts up the infer red reader and sender */
@@ -71,72 +71,70 @@ int main (void)
         }
         if (navswitch_push_event_p (NAVSWITCH_SOUTH)) {
             NavSwitch_Val = (NavSwitch_Val - 1)%3;
-		if(NavSwitch_Val == 0) {
-			NavSwitch_Val = 3;
-		}
-	}
-		
-	/* This locsk in the letter picked and clears the board from all presets for the animations */
-	if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
-		ClearBoard();
-		tinygl_clear();
-		tinygl_update();
-		break;
-	}
-	/* gets the character corrsponding to the value */
-	character = GetPSR(NavSwitch_Val);
+            if(NavSwitch_Val == 0) {
+                NavSwitch_Val = 3;
+            }
+        }
 
-        }	
-	/* waits for the letter from the other UCFK4 to be sent while also sending it's own letter */
-	while(1) {
-		/* Playing the cool animation for the lock in */
-		while(Animation == 0) {
-			Animation = RollFill(); 
-		}
-		
-		/*The real start to the previous while loop */
-		
-		tinygl_update();
-		
-		ir_uart_putc(character);
-		FillBoard();		
-
-		if(ir_uart_read_ready_p()) {
-			Resv = ir_uart_getc();
-		}
-		/* This checks if the letter has been resived and if it is of the correct type.
-		Also for later it checks if you both got the same thing */
-		if ((Resv == 'R' || Resv == 'S' || Resv == 'P' )  && Resv != character) {
-			ir_uart_putc(character);
-			ClearBoard();
-			tinygl_clear();
-			tinygl_update();
-			break;
-		} 
-
-		/*
-		navswitch_update ();
-		if(navswitch_push_event_p (NAVSWITCH_PUSH)) {
-			break;
-		}  */
-	}
-	
-	/*This is all for setting up and checking who won.
-	printing out either 'W' or 'L' */
-	Won = WhoWon(character, Resv);
-	if(Won == 1) {
-			display_character ('W');
-		} else {
-			display_character ('L');
-	}
-
-	/* This loop just needs to be there for the messages to play there full way through. */
-	while(1) {
-		tinygl_update();
-	}
+    /* This locsk in the letter picked and clears the board from all presets for the isAnimatings */
+    if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
+        ClearBoard();
+        tinygl_clear();
+        tinygl_update ();
+        break;
+    }
+    /* gets the character corrsponding to the value */
+    character = GetPSR(NavSwitch_Val);
 
 
 
+    }
+    /* waits for the letter from the other UCFK4 to be sent while also sending it's own letter */
+    while(1) {
+        /* Playing the cool isAnimating for the lock in */
+        while(isAnimating == 0) {
+            isAnimating = RollFill();
+        }
+
+        /*The real start to the previous while loop */
+
+        tinygl_update();
+
+        FillBoard();
+
+        if(ir_uart_read_ready_p()) {
+            receivedCharacter = ir_uart_getc();
+        }
+        /* This checks if the letter has been resived and if it is of the correct type.
+        Also for later it checks if you both got the same thing */
+        if (receivedCharacter == 'R' || receivedCharacter == 'S' || receivedCharacter == 'P')  {
+            ir_uart_putc(character);
+            ClearBoard();
+            tinygl_clear();
+            tinygl_update();
+            break;
+        }
+
+
+        navswitch_update ();
+        if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
+            ir_uart_putc(character);
+        }
+    }
+
+    /*This is all for setting up and checking who won.
+    printing out either 'W' or 'L' */
+    Won = WhoWon(character, receivedCharacter);
+    if(Won == 1) {
+            display_character ('W');
+        } else {
+            display_character ('L');
+    }
+
+    /* This loop just needs to be there for the messages to play there full way through. */
+    while(1) {
+        tinygl_update();
+    }
 
 
     return 0;
