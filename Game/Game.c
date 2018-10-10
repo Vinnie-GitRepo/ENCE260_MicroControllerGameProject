@@ -73,7 +73,7 @@ int main (void)
 	if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
 		ClearBoard();
 		tinygl_clear();
-		tinygl_update ();
+		tinygl_update();
 		break;
 	}
 	/* gets the character corrsponding to the value */
@@ -109,11 +109,11 @@ int main (void)
 			break;
 		} 
 
-
+		/*
 		navswitch_update ();
 		if(navswitch_push_event_p (NAVSWITCH_PUSH)) {
 			break;
-		} 
+		}  */
 	}
 	
 	/*This is all for setting up and checking who won.
