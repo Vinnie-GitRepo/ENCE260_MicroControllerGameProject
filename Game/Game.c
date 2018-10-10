@@ -25,49 +25,56 @@ void display_character (char character)
 /* What runs the game */
 int main (void)
 {
-	int Wins = 0;
-	int Loses = 0;
-	/* The RPS character that displays on the LED screen while also being what is sent to the other UCFK4 */
+    int Wins = 0;
+    int Loses = 0;
+
+    /* The RPS character that displays on the LED screen while also being what is sent to the other UCFK4 */
     char character = 'R';
-	/* The char that waits for then holds the character sent by the other UCFK4 */
-	char Resv = '0';
-	/* 1 is if this UCFK4 won and if it ends with 0, then UCFK4 lost */
-	int Won = 0;
-	/* 0 if the animation is still going, 1 for when it finishes*/
-	int Animation = 0;
-	/* Starts up the infer red reader and sender */
-	ir_uart_init();	
-	/* System inilzeed */
+
+    /* The char that waits for then holds the character sent by the other UCFK4 */
+    char receivedCharacter = '0';
+
+    /* 1 is if this UCFK4 won and if it ends with 0, then UCFK4 lost */
+    int Won = 0;
+
+    /* 0 if the animation is still going, 1 for when it finishes*/
+    int isAnimating = 0;
+
+    /* Starts up the infer red reader and sender */
+    ir_uart_init();
+
+    /* System inilzeed */
     system_init ();
-	/* Sets the waiting time for anything tinygl related */
+
+    /* Sets the waiting time for anything tinygl related */
     tinygl_init (PACER_RATE);
     tinygl_font_set (&font5x7_1);
     tinygl_text_speed_set (MESSAGE_RATE);
+
     navswitch_init ();
+    int NavSwitch_Val = 0;
 
-
-	int NavSwitch_Val = 0;
     pacer_init (PACER_RATE);
 
-	/*While loop that will stop when you select rock, paper or scissors (R, P or S) through pushing down the navswitch */
+    /*While loop that will stop when you select rock, paper or scissors (R, P or S) through pushing down the navswitch */
     while (1)
     {
-		/*Wait times for things to update */
+        /*Wait times for things to update */
         pacer_wait ();
         tinygl_update ();
         navswitch_update ();
-		display_character (character);
+        display_character (character);
         /* setting up to go up characters and down to go down characters */
         if (navswitch_push_event_p (NAVSWITCH_NORTH)) {
             NavSwitch_Val = (NavSwitch_Val + 1)%3;
-			
-		}
+
+        }
         if (navswitch_push_event_p (NAVSWITCH_SOUTH)) {
             NavSwitch_Val = (NavSwitch_Val - 1)%3;
-			if(NavSwitch_Val == 0) {
-				NavSwitch_Val = 3;
-			}
+		if(NavSwitch_Val == 0) {
+			NavSwitch_Val = 3;
 		}
+	}
 		
 	/* This locsk in the letter picked and clears the board from all presets for the animations */
 	if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
@@ -79,9 +86,7 @@ int main (void)
 	/* gets the character corrsponding to the value */
 	character = GetPSR(NavSwitch_Val);
 
-        
-        
-    }	
+        }	
 	/* waits for the letter from the other UCFK4 to be sent while also sending it's own letter */
 	while(1) {
 		/* Playing the cool animation for the lock in */
@@ -129,8 +134,6 @@ int main (void)
 	while(1) {
 		tinygl_update();
 	}
-
-	
 
 
 
