@@ -8,6 +8,9 @@
 #ifndef TABLES_H
 #define TABLES_H
 
+/** GET Menu from thing  */
+void GetMenu(int Thing);
+
 /** GET PSR from thing  */
 char GetPSR(int Thing);
 

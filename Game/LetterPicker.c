@@ -30,7 +30,7 @@ int DisplayScores(char Wins, char Loses)
 	ScrollText_init();
 	char s[] = { ' ','W', Wins,' ','L', Loses};
 
-	tinygl_text(s);;
+	tinygl_text(s);
 	TCNT1 = 0;
 	while(1) {
 		
@@ -43,7 +43,7 @@ int DisplayScores(char Wins, char Loses)
 	return 1;
 }
 
-int DisplayWinner(char Wins, char Loses)
+int DisplayWinner(char Wins)
 {
 
 	system_init();
@@ -56,7 +56,7 @@ int DisplayWinner(char Wins, char Loses)
 		s = "YOU LOST </3";
 	}
 
-	tinygl_text(s);;
+	tinygl_text(s);
 	TCNT1 = 0;
 	while(1) {
 		

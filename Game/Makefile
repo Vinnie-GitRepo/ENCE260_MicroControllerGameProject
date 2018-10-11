@@ -58,7 +58,7 @@ pacer.o: ../../../utils/pacer.c ../../../drivers/avr/system.h ../../../drivers/a
 tinygl.o: ../../../utils/tinygl.c ../../../drivers/avr/system.h ../../../drivers/display.h ../../../utils/font.h ../../../utils/tinygl.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-Tables.o: Tables.c Tables.h 
+Tables.o: Tables.c Tables.h ../../../utils/tinygl.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
 Animations.o: Animations.c Animations.h  ../../../drivers/avr/pio.h ../../../drivers/avr/system.h ../../../utils/tinygl.h
@@ -70,8 +70,11 @@ LetterPicker.o: LetterPicker.c LetterPicker.h  ../../../drivers/avr/system.h ../
 Starter.o: Starter.c Starter.h  ../../../drivers/avr/system.h ../../../drivers/display.h ../../../drivers/navswitch.h ../../../fonts/font5x7_1.h ../../../utils/font.h ../../../utils/pacer.h ../../../utils/tinygl.h ../../../drivers/avr/pio.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
+PSR.o: PSR.c PSR.h ../../../drivers/avr/ir_uart.h ../../../drivers/avr/system.h ../../../drivers/display.h ../../../drivers/navswitch.h ../../../fonts/font5x7_1.h ../../../utils/font.h ../../../utils/pacer.h ../../../utils/tinygl.h ../../../drivers/avr/pio.h
+	$(CC) -c $(CFLAGS) $< -o $@
+
 # Link: create ELF output file from object files.
-Game.out: Game.o ir_uart.o pio.o prescale.o system.o timer.o timer0.o usart1.o display.o ledmat.o navswitch.o font.o pacer.o tinygl.o Tables.o Animations.o LetterPicker.o Starter.o
+Game.out: Game.o ir_uart.o pio.o prescale.o system.o timer.o timer0.o usart1.o display.o ledmat.o navswitch.o font.o pacer.o tinygl.o Tables.o Animations.o LetterPicker.o Starter.o PSR.o
 	$(CC) $(CFLAGS) $^ -o $@ -lm
 	$(SIZE) $@
 

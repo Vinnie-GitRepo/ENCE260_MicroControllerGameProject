@@ -1,4 +1,25 @@
 #include "Tables.h"
+#include "tinygl.h"
+
+/* Gets the Symbol for paper scisosrs or rock, from an int mod 3 */
+void GetMenu(int Thing)
+{
+	char* Menu = " PAPER SCISSORS ROCK";
+	switch(Thing)
+		{
+			case 0:
+				Menu = " PAPER SCISSORS ROCK";
+				break;
+			case 1:
+				Menu = " GOLD THIEF STEAL";
+				break;
+			case 2:
+				Menu = " QUIT";
+				break;
+		}
+	tinygl_text(Menu);
+}
+
 
 /* Gets the Symbol for paper scisosrs or rock, from an int mod 3 */
 char GetPSR(int Thing)
