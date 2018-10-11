@@ -9,6 +9,6 @@
 #define LETTERPICKER_H
 
 /** Clears the board form PIO inputs */
-int WaitForLock(void);
+int DisplayScores(char Wins, char Loses);
 
 #endif

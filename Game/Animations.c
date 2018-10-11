@@ -83,7 +83,7 @@ int RollFill(void)
 			tinygl_update ();
 			tinygl_draw_point (pos, 1); 
 			pos.x += 1;
-			if(pos.x == 6) {
+			if(pos.x == 7) {
 				pos.x = 0;
 				pos.y += 1;
 			}
@@ -112,7 +112,7 @@ int RollDel(void)
 		tinygl_update ();
 		tinygl_draw_point (pos, 1); 
 		pos.x += 1;
-		if(pos.x == 6) {
+		if(pos.x == 7) {
 			pos.x = 0;
 			pos.y += 1;
 		}

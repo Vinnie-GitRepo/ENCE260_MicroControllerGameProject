@@ -29,16 +29,25 @@ int WhoWon(char character, char Resv)
 			if(Resv == 'S') { 
 				Won = 1;
 			}
+			if(Resv == 'R') {
+				Won = 2;
+			}
 			break;
 		case 'S':
 			if(Resv == 'P') { 
 				Won = 1;
 			}
+			if(Resv == 'S') {
+				Won = 2;
+			}
 			break;
 
 		case 'P':
 			if(Resv == 'R') { 
-					Won = 1;
+				Won = 1;
+			}
+			if(Resv == 'P') {
+				Won = 2;
 			}
 			break;
 
