@@ -57,7 +57,7 @@ int main (void)
     int NavSwitch_Val = 0;
 
     pacer_init (PACER_RATE);
-	while(1)
+	while(Wins != '5' && Loses != '5')
 	{
 		/* System inilzeed */
     	system_init ();		
@@ -172,6 +172,10 @@ int main (void)
 		}
 		
 
+	}
+	isAnimating = 0;
+	while(isAnimating == 0) {
+			isAnimating = DisplayWinner(Wins, Loses);
 	}
     return 0;
 }

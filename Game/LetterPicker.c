@@ -42,3 +42,29 @@ int DisplayScores(char Wins, char Loses)
 	}
 	return 1;
 }
+
+int DisplayWinner(char Wins, char Loses)
+{
+
+	system_init();
+
+	char* s;
+	ScrollText_init();
+	if(Wins == '5') {
+		s = "YOU WON!";
+	} else {
+		s = "YOU LOST </3";
+	}
+
+	tinygl_text(s);;
+	TCNT1 = 0;
+	while(1) {
+		
+		tinygl_update();
+		navswitch_update ();
+		if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
+		    break;
+		}
+	}
+	return 1;
+}

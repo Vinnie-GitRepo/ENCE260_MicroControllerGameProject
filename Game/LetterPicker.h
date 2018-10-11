@@ -11,4 +11,7 @@
 /** Clears the board form PIO inputs */
 int DisplayScores(char Wins, char Loses);
 
+/** Clears the board form PIO inputs */
+int DisplayScores(char Wins, char Loses);
+
 #endif
