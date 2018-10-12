@@ -24,8 +24,8 @@ LetterPicker.o */
 #define MESSAGE_RATE_SCROLL 1
 #define PACER_RATE_MENU 500
 #define MESSAGE_RATE_MENU 3
-/* Waits for lock of what letter has been picked */
 
+/* Sets up tinygl and pacer for when it's displaying one character rather then a message */
 void OneText_init(void)
 {
 	pacer_init (PACER_RATE);
@@ -35,6 +35,7 @@ void OneText_init(void)
 	tinygl_text_dir_set (0);
 }
 
+/* Sets up tinygl and pacer for the text that displays on the menu*/
 void MenuText_init(void)
 {
 	pacer_init (PACER_RATE_MENU);
@@ -45,6 +46,7 @@ void MenuText_init(void)
 	tinygl_text_mode_set (TINYGL_TEXT_MODE_SCROLL);
 }
 
+/* Sets up tinygl and pacer for any scorlling text other then menu*/
 void ScrollText_init(void)
 {
 	pacer_init (PACER_RATE_SCROLL);
@@ -55,6 +57,7 @@ void ScrollText_init(void)
 	tinygl_text_mode_set (TINYGL_TEXT_MODE_SCROLL);
 }
 
+/* Sets up pio so it's easy to manipulate */
 void PioBroad_init(void)
 {
 	pio_config_set(LEDMAT_ROW1_PIO, PIO_OUTPUT_HIGH);

@@ -8,16 +8,16 @@
 #ifndef LETTERPICKER_H
 #define LETTERPICKER_H
 
-/** Clears the board form PIO inputs */
+/** Displays the scores*/
 int DisplayScores(char Wins, char Loses);
 
 /** Shows the gold you have */
 int DisplayGold(char Gold);
 
-/** Clears the board form PIO inputs */
+/** Displays text saying if you won or lost */
 int DisplayWinner(char Wins);
 
-/** Displays winners of GTS */
+/** Displays winners of GTS and the type of victory/loss it was */
 int DisplayWinnerGTS(char Wins, char Gold, char OtherGold);
 
 #endif

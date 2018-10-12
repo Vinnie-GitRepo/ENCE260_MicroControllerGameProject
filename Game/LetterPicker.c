@@ -19,8 +19,7 @@ LetterPicker.o */
 #include "Starter.h"
 
 
-/* Waits for lock of what letter has been picked */
-
+/* Displays the scores of wins and loses until navsiwtch is pushed*/
 int DisplayScores(char Wins, char Loses)
 {
 
@@ -43,6 +42,7 @@ int DisplayScores(char Wins, char Loses)
 	return 1;
 }
 
+/* Displays the Gold total until navsiwtch is pushed*/
 int DisplayGold(char Gold)
 {
 
@@ -65,6 +65,7 @@ int DisplayGold(char Gold)
 	return 1;
 }
 
+/* Displays the scores 'YOU WON' or 'YOU LOST' until navsiwtch is pushed*/
 int DisplayWinner(char Wins)
 {
 
@@ -91,6 +92,7 @@ int DisplayWinner(char Wins)
 	return 1;
 }
 
+/** Displays winners of GTS and the type of victory/loss it was */
 int DisplayWinnerGTS(char Wins, char Gold, char OtherGold)
 {
 
@@ -104,7 +106,7 @@ int DisplayWinnerGTS(char Wins, char Gold, char OtherGold)
 		s = "YOU GOT TRAPPED YOU LOSE";
 	} else if(Gold == 5) {
 		s = "YOU GOT 5 GOLD YOU WIN";
-	} else {
+	} else if(OtherGold == 5){
 		s = "THEY GOT 5 GOLD YOU LOSE";
 	}
 
