@@ -40,6 +40,60 @@ char GetPSR(int Thing)
 	return character;
 }
 
+/* Get gold steal trap from int */
+char GetGTS(int Thing)
+{
+	char character = 'G';
+	switch(Thing)
+	{
+		case 0:
+			character = 'G';
+			break;
+		case 1:
+			character = 'S';
+			break;
+		case 2:
+			character = 'T';
+			break;
+	}
+	return character;
+}
+
+/* claculates the diffrent types of round endings */
+int RoundEnd(char character, char Resv)
+{
+	/* Defults to if both players did Gold */
+	int Won = 1;
+	switch(character)
+	{
+		/*If you went gold and they stole it */
+		case 'G':
+			if(Resv == 'S') { 
+				Won = 0;
+			}
+			break;
+
+		/*If you went Trap and they went steal, Therefore you just win */
+		case 'T':
+			if(Resv == 'S') { 
+				Won = 3;
+			}
+			break;
+		
+		/*If you went Steal and they went trap, Therefore you just lose */
+		case 'S':
+			if(Resv == 'T') { 
+				Won = -1;
+			}
+		/*If you went Steal and they went gold */
+			if(Resv == 'G') { 
+				Won = 2;
+			}
+
+	}
+	return Won;
+}
+
 /* Gets who won out of two results then returns 1 for won 0 for not won */
 int WhoWon(char character, char Resv)
 {

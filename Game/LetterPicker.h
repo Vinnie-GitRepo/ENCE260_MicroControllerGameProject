@@ -11,7 +11,13 @@
 /** Clears the board form PIO inputs */
 int DisplayScores(char Wins, char Loses);
 
+/** Shows the gold you have */
+int DisplayGold(char Gold);
+
 /** Clears the board form PIO inputs */
 int DisplayWinner(char Wins);
+
+/** Displays winners of GTS */
+int DisplayWinnerGTS(char Wins, char Gold, char OtherGold);
 
 #endif

@@ -10,6 +10,8 @@
 #include "LetterPicker.h"
 #include "Starter.h"
 #include "PSR.h"
+#include "GTS.h"
+
 
 /* What runs the game */
 int main (void)
@@ -51,6 +53,9 @@ int main (void)
 
    while(NavSwitch_Val == 0) {
 		PSR_Game();
+	}
+	while(NavSwitch_Val == 1) {
+		GTS_Game();
 	}
 
 	tinygl_text(" WORK IN PROGRESS");

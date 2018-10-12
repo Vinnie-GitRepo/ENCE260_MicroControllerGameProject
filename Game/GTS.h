@@ -5,12 +5,11 @@
 # Descr:  Switch cases for the game.
 */
 
-#ifndef PSR_H
-#define PSR_H
+#ifndef GTS_H
+#define GTS_H
 
 /** initialize the tinygl for static characters*/
-void PSR_Game(void);
+void GTS_Game(void);
 
-/** Displays character aee */
-void display_character (char character);
+
 #endif

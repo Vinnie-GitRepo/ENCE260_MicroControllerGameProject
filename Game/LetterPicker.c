@@ -43,6 +43,28 @@ int DisplayScores(char Wins, char Loses)
 	return 1;
 }
 
+int DisplayGold(char Gold)
+{
+
+	system_init();
+
+
+	ScrollText_init();
+	char s[] = { ' ','G', 'O', 'L', 'D', ' ', Gold};
+
+	tinygl_text(s);
+	TCNT1 = 0;
+	while(1) {
+		
+		tinygl_update();
+		navswitch_update ();
+		if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
+		    break;
+		}
+	}
+	return 1;
+}
+
 int DisplayWinner(char Wins)
 {
 
@@ -62,6 +84,37 @@ int DisplayWinner(char Wins)
 		
 		tinygl_update();
 		navswitch_update ();
+		if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
+		    break;
+		}
+	}
+	return 1;
+}
+
+int DisplayWinnerGTS(char Wins, char Gold, char OtherGold)
+{
+
+	system_init();
+
+	char* s;
+	ScrollText_init();
+	if(Wins == 3) {
+		s = "YOU TRAPPED THEM YOU WIN";
+	} else if(Wins == -1){
+		s = "YOU GOT TRAPPED YOU LOSE";
+	} else if(Gold == 5) {
+		s = "YOU GOT 5 GOLD YOU WIN";
+	} else {
+		s = "THEY GOT 5 GOLD YOU LOSE";
+	}
+
+	tinygl_text(s);
+	TCNT1 = 0;
+	while(1) {
+		
+		
+		navswitch_update ();
+		tinygl_update();
 		if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
 		    break;
 		}

@@ -9,35 +9,25 @@
 #include "Animations.h"
 #include "LetterPicker.h"
 #include "Starter.h"
-
+#include "PSR.h"
 
 #define PACER_RATE 3000
 #define MESSAGE_RATE 200
 
-/* makes sure the right character is displayed through a buffer.
-Also puts the null byte of '\0'to show the end of a display_character */
-void display_character (char character)
-{
-    char buffer[2];
-    buffer[0] = character;
-    buffer[1] = '\0';
-    tinygl_text (buffer);
-}
 
 
 /* What runs the game */
-int PSR_Game(void)
+int GTS_Game(void)
 {
-    char Wins = '0';
-    char Loses = '0';
-
+    char Gold = '0';
+	char OtherGold ='0';
 	/* Start timers. Well mainly TCNT1 */
 	TCCR1A = 0x00;
 	TCCR1B = 0x05;
 	TCCR1C = 0x00;	
 
     /* The RPS character that displays on the LED screen while also being what is sent to the other UCFK4 */
-    char character = 'R';
+    char character = 'G';
 
     /* The char that waits for then holds the character sent by the other UCFK4 */
     char receivedCharacter = '0';
@@ -57,7 +47,7 @@ int PSR_Game(void)
     int NavSwitch_Val = 0;
 
     pacer_init (PACER_RATE);
-	while(Wins != '5' && Loses != '5')
+	while((Won != -1) &&  (Won != 3) && (Gold != '5') && (OtherGold != '5'))
 	{
 		/* System inilzeed */
     	system_init ();		
@@ -66,11 +56,10 @@ int PSR_Game(void)
 		OneText_init();
 
 		NavSwitch_Val = 0;
-		character = 'R';
+		character = 'G';
 		/*While loop that will stop when you select rock, paper or scissors (R, P or S) through pushing down the navswitch */
 		while (1)
 		{
-			PORTC |=(1 <<2);
 		    /*Wait times for things to update */
 		    pacer_wait ();
 		    tinygl_update ();
@@ -96,8 +85,8 @@ int PSR_Game(void)
 				break;
 			}
 			/* gets the character corrsponding to the value */
-			character = GetPSR(NavSwitch_Val);
-
+			character = GetGTS(NavSwitch_Val);
+			
 		}
 
 		isAnimating = 0;
@@ -105,15 +94,14 @@ int PSR_Game(void)
 		/* waits for the letter from the other UCFK4 to be sent while also sending it's own letter */
 		while(1) {
 		    /* Playing the cool isAnimating for the lock in */
-			
 		    while(isAnimating == 0) {
-		        isAnimating = RollFill();
+		        isAnimating = RollFillGTS();
 		    }
-			receivedCharacter = 'F';
+
 		    /*The real start to the previous while loop */
 
 		    tinygl_update();
-			navswitch_update ();
+
 		    
 
 		    if(ir_uart_read_ready_p()) {
@@ -121,7 +109,7 @@ int PSR_Game(void)
 		    }
 		    /* This checks if the letter has been resived and if it is of the correct type.
 		    Also for later it checks if you both got the same thing */
-		    if (receivedCharacter == 'R' || receivedCharacter == 'S' || receivedCharacter == 'P')  {
+		    if (receivedCharacter == 'G' || receivedCharacter == 'T' || receivedCharacter == 'S')  {
 		        ir_uart_putc(character);
 		        ClearBoard();
 		    	tinygl_clear();
@@ -131,10 +119,68 @@ int PSR_Game(void)
 		    }
 
 
+		    navswitch_update ();
+			/* Testing */
+		    if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
+		        ir_uart_putc(character);
+				ClearBoard();
+		    	tinygl_clear();
+		        tinygl_update();
+				RollDel();
+				/* Testing */break;
+		    }
+		}
+
+		/*This is all for setting up and checking who won.
+		printing out either 'W' or 'L' */
+		Won = RoundEnd(character, receivedCharacter);
+		if(Won == 1) {
+			Gold += 1;
+		}
+		/* Resetting Timer */
+		
+		/* This loop just needs to be there for the messages to play there full way through. */
+		isAnimating = 0;
+		
+		while(1) {
+			while(isAnimating == 0) {
+				isAnimating = RollFillGTS();
+				if(Won == 0) {
+					ir_uart_putc(Gold);
+				}else if(Won == 2) {
+					if(ir_uart_read_ready_p()) {
+				    	Gold = ir_uart_getc();
+					}
+				}else if((Won == -1) ||  (Won == 3)) {
+					break;
+				}
+			}
+		    /*The real start to the previous while loop */
+
+		    tinygl_update();
+
+		    
+
+		    if(ir_uart_read_ready_p()) {
+		        OtherGold = ir_uart_getc();
+		    }
+		    /* This checks if the letter has been resived and if it is of the correct type.
+		    Also for later it checks if you both got the same thing */
+		    if (receivedCharacter == 'G' || receivedCharacter == 'T' || receivedCharacter == 'S')  {
+		        ir_uart_putc(Gold);
+		        ClearBoard();
+		    	tinygl_clear();
+		        tinygl_update();
+				RollDel();
+		        break;
+		    }
+
+
+		    navswitch_update ();
 			if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
 		        ir_uart_putc(character);
 			}
-			/* Testing */
+			/* Testing */ 
 		    if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
 		        ir_uart_putc(character);
 				ClearBoard();
@@ -144,41 +190,16 @@ int PSR_Game(void)
 				break; /*Testing*/ 
 		    }
 		}
-
-		/*This is all for setting up and checking who won.
-		printing out either 'W' or 'L' */
-		Won = WhoWon(character, receivedCharacter);
-		if(Won == 1) {
-			character = 'W';
-			Wins += 1;
-		} else if(Won == 0) {
-			character = 'L';
-			Loses += 1;
-		} else {
-			character = 'D';
-		}
-
-		/* Resetting Timer */
-		
-		TCNT1 = 0;
-		/* This loop just needs to be there for the messages to play there full way through. */
-		while(TCNT1 < 24000) {
-			
-			
-		    tinygl_update();
-			display_character (character);
-		}
 		ClearBoard();
 		isAnimating = 0;
-		while(isAnimating == 0) {
-			isAnimating = DisplayScores(Wins, Loses);
+		while(isAnimating == 0){
+			isAnimating = DisplayGold(Gold);
 		}
 		
-
 	}
 	isAnimating = 0;
 	while(isAnimating == 0) {
-			isAnimating = DisplayWinner(Wins);
+			isAnimating = DisplayWinnerGTS(Won, Gold, OtherGold);
 	}
     return 0;
 }

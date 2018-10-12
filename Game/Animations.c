@@ -97,6 +97,36 @@ int RollFill(void)
 	return 1;
 }
 
+int RollFillGTS(void)
+{
+	tinygl_init (PACER_RATE);
+	tinygl_clear();
+	tinygl_point_t pos;
+	TCCR1A = 0x00;
+	TCCR1B = 0x05;
+	TCCR1C = 0x00;
+	pos.x = 0;
+	pos.y = 0;
+	while (1)
+	{
+		if(TCNT1 > 300) {
+			tinygl_update ();
+			tinygl_draw_point (pos, 1); 
+			pos.x += 1;
+			if(pos.x == 7) {
+				pos.x = 0;
+				pos.y += 1;
+			}
+			TCNT1 = 0;
+		}
+		
+		if(pos.y ==  7) {
+			break;
+		}
+	}
+	return 1;
+}
+
 int RollDel(void)
 {
 	tinygl_init (PACER_RATE);

@@ -17,6 +17,9 @@ void FillBoard (void);
 /** Fills the board with  LEDS in a nice way */
 int RollFill (void);
 
+/** Fills the board with  LEDS in a nice way but fast */
+int RollFillGTS(void);
+
 /** Fixes the board with  LEDS in a nice way */
 int RollDel (void);
 
