@@ -103,13 +103,14 @@ int PSR_Game(void)
 		isAnimating = 0;
 		receivedCharacter = '0';
 		/* waits for the letter from the other UCFK4 to be sent while also sending it's own letter */
+		TCNT1 = 0;
 		while(1) {
 		    /* Playing the cool isAnimating for the lock in */
 			
 		    while(isAnimating == 0) {
 		        isAnimating = RollFill();
 		    }
-			receivedCharacter = 'F';
+			
 		    /*The real start to the previous while loop */
 
 		    tinygl_update();
@@ -121,12 +122,14 @@ int PSR_Game(void)
 		    }
 		    /* This checks if the letter has been resived and if it is of the correct type.
 		    Also for later it checks if you both got the same thing */
-		    if (receivedCharacter == 'R' || receivedCharacter == 'S' || receivedCharacter == 'P')  {
+		    if ((receivedCharacter == 'R' || receivedCharacter == 'S' || receivedCharacter == 'P') && TCNT1 > 5)  {
 		        ir_uart_putc(character);
 		        ClearBoard();
 		    	tinygl_clear();
 		        tinygl_update();
 				RollDel();
+				PORTC &= ~(1 <<2);
+				TCNT1 = 50;
 		        break;
 		    }
 
@@ -134,15 +137,7 @@ int PSR_Game(void)
 			if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
 		        ir_uart_putc(character);
 			}
-			/* Testing */
-		    if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
-		        ir_uart_putc(character);
-				ClearBoard();
-		    	tinygl_clear();
-		        tinygl_update();
-				RollDel();
-				break; /*Testing*/ 
-		    }
+			navswitch_update ();
 		}
 
 		/*This is all for setting up and checking who won.
@@ -163,8 +158,7 @@ int PSR_Game(void)
 		TCNT1 = 0;
 		/* This loop just needs to be there for the messages to play there full way through. */
 		while(TCNT1 < 24000) {
-			
-			
+			receivedCharacter = 'F';
 		    tinygl_update();
 			display_character (character);
 		}
