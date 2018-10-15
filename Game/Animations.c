@@ -1,20 +1,23 @@
-/*
-# File:   Animations.c
-# Author: Group417
-# Date:   10 OCT 2018
-# Descr:  Animations on the LED board
-*/
+/***********************************************************************
+# File:          Animations.c
+# Group:         417
+# Authors:       Robert Condon, Vinnie Jamieson
+# Description:   Module for LED game animations on the fun kit
+# Last Modified: 15 OCT 2018
+***********************************************************************/
+
 #include "Animations.h"
 #include "pio.h"
 #include "tinygl.h"
 #include "system.h"
 
-
 #define PACER_RATE 3000
 #define LOOP_RATE 200
 
 
-/* Configures the board to high for easier manipulation */
+/*
+ * Configures the board to high for easier manipulation
+ */
 void ConfigBoard(void)
 {
     pio_config_set(LEDMAT_ROW1_PIO, PIO_OUTPUT_HIGH);
@@ -29,10 +32,13 @@ void ConfigBoard(void)
     pio_config_set(LEDMAT_COL3_PIO, PIO_OUTPUT_HIGH);
     pio_config_set(LEDMAT_COL4_PIO, PIO_OUTPUT_HIGH);
     pio_config_set(LEDMAT_COL5_PIO, PIO_OUTPUT_HIGH);
-
 }
 
-/* Clears the board of any on LED's */
+
+
+/*
+ * Clears the board of any on LEDs.
+ */
 void ClearBoard(void)
 {
     ConfigBoard();
@@ -52,7 +58,11 @@ void ClearBoard(void)
 
 }
 
-/* Turns all LED's on the board on */
+
+
+/*
+ * Turns all LEDs on the board on.
+ */
 void FillBoard(void)
 {
     ConfigBoard();
@@ -72,7 +82,12 @@ void FillBoard(void)
 
 }
 
-/* plays a aniamtion of LED's that fill the board slowly top left to bottom right */
+
+
+/*
+ * Plays an animation of LED's slowly filling the
+ * board from the top left to the bottom right.
+ */
 int RollFill(void)
 {
     tinygl_init(PACER_RATE);
@@ -109,8 +124,12 @@ int RollFill(void)
     return 1;
 }
 
-/* plays a aniamtion of LED's that fill the board slowly top left to bottom right.
-But this time does it faster*/
+
+
+/*
+ * Plays an aniamtion of LED's that fill the board slowly from the
+ * top left to bottom right. However, this time is does it faster.
+ */
 int RollFillGTS(void)
 {
     tinygl_init(PACER_RATE);
@@ -148,7 +167,11 @@ int RollFillGTS(void)
     return 1;
 }
 
-/* Makes sure all LED's are where they were before */
+
+
+/*
+ * Ensures that all LEDs are where they were previously.
+ */
 int RollDel(void)
 {
     tinygl_init(PACER_RATE);
@@ -182,7 +205,7 @@ int RollDel(void)
     }
 
     tinygl_clear();
-    return 1;
 
+    return 1;
 }
 

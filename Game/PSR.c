@@ -1,3 +1,11 @@
+/***********************************************************************
+# File:          PSR.c
+# Group:         417
+# Authors:       Robert Condon, Vinnie Jamieson
+# Description:   Module for our assignment's Paper Scissors Rock game
+# Last Modified: 15 OCT 2018
+***********************************************************************/
+
 #include "system.h"
 #include "pacer.h"
 #include "navswitch.h"
@@ -10,12 +18,14 @@
 #include "LetterPicker.h"
 #include "Starter.h"
 
-
 #define PACER_RATE 3000
 #define MESSAGE_RATE 200
 
-/* makes sure the right character is displayed through a buffer.
-Also puts the null byte of '\0'to show the end of a display_character */
+
+/*
+ * Makes sure the right character is displayed through a buffer.
+ * Also puts the null byte of '\0'to show the end of a display_character
+ */
 void display_character(char character)
 {
     char buffer[2];
@@ -25,7 +35,9 @@ void display_character(char character)
 }
 
 
-/* What runs the game */
+/*
+ * What runs the game
+ */
 int PSR_Game(void)
 {
     char Wins = '0';

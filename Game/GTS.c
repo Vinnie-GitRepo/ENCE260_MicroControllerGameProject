@@ -1,3 +1,11 @@
+/***********************************************************************
+# File:          GTS.c
+# Group:         417
+# Authors:       Robert Condon, Vinnie Jamieson
+# Description:   Module for our assignment's Gold Trap Steal game
+# Last Modified: 15 OCT 2018
+***********************************************************************/
+
 #include "system.h"
 #include "pacer.h"
 #include "navswitch.h"
@@ -15,13 +23,15 @@
 #define MESSAGE_RATE 200
 
 
-
-/* What runs the game */
+/*
+ * What runs the game
+ */
 int GTS_Game(void)
 {
     char Gold = '0';
     char OtherGold = '0';
     char StolenGold = '0';
+
     /* Start timers. Well mainly TCNT1 */
     TCCR1A = 0x00;
     TCCR1B = 0x05;
@@ -80,7 +90,7 @@ int GTS_Game(void)
             }
 
             /* This locsk in the letter picked and clears the board from all presets for the isAnimatings */
-            if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
+            if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
                 ClearBoard();
                 tinygl_clear();
                 tinygl_update();
