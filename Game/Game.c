@@ -5,7 +5,7 @@
 #include "tinygl.h"
 #include "../fonts/font5x7_1.h"
 #include "Tables.h"
-#include "isAnimatings.h"
+#include "Animations.h"
 
 #define LOOP_RATE 500
 #define PACER_RATE 1000
