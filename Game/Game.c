@@ -19,7 +19,7 @@ int main (void)
 	system_init();
 	MenuText_init();
 	navswitch_init ();
-    int NavSwitch_Val = 0;
+    	int NavSwitch_Val = 0;
 	tinygl_text(" PAPER SCISSORS ROCK");
 	NavSwitch_Val = 0;
 
