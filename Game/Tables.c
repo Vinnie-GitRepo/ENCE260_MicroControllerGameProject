@@ -59,6 +59,30 @@ char GetGTS(int NavSwitch_Val)
 	return character;
 }
 
+int CheapInt(char Gold) {
+	int GoldInt = 0;
+	switch(Gold)
+	{
+		case '0':
+			GoldInt = 0;
+			break;
+		case '1':
+			GoldInt = 1;
+			break;
+		case '2':
+			GoldInt = 2;
+			break;
+		case '3':
+			GoldInt = 3;
+			break;
+		case '4':
+			GoldInt = 4;
+			break;
+	}
+
+	return GoldInt;
+}
+
 /* claculates the diffrent types of round endings */
 int RoundEnd(char character, char Received_Char)
 {
@@ -85,12 +109,19 @@ int RoundEnd(char character, char Received_Char)
 			if(Received_Char == 'T') { 
 				Won = -1;
 			}
-		/*If you went Steal and they went gold */
-			if(Received_Char == 'G') { 
+			if(Received_Char == 'S') {
 				Won = 2;
 			}
 
 	}
+	/* Won1 = You did Gold
+	Won2 = You stole Gold
+	Won3 = You Trapped them
+	Won4 = You trapped but got nothing
+	Won5 = You Both did Gold
+	Won6 = They trapped on got nothing
+	Won0 = You're gold got stolen
+	Won-1 = You stole and got trapped */
 	return Won;
 }
 

@@ -48,13 +48,14 @@ int DisplayScores(char Wins, char Loses)
 /*
  * Displays the Gold total until navsiwtch is pushed
  */
-int DisplayGold(char Gold)
+int DisplayGold(char Gold, char OtherGold)
 {
 
     system_init();
     ScrollText_init();
 
-    char s[] = { ' ','G', 'O', 'L', 'D', ' ', Gold};
+	char s[] = { ' ','G', ' ', Gold, ' ', 'O', OtherGold};
+    /*char s[] = { ' ','G', 'O', 'L', 'D', ' ', Gold}; */
 
     tinygl_text(s);
     TCNT1 = 0;
@@ -82,7 +83,7 @@ int DisplayWinner(char Wins)
     ScrollText_init();
     char* s;
 
-    if (Wins == '5') {
+    if (Wins == '3') {
         s = "YOU WON!";
     } else {
         s = "YOU LOST </3";
@@ -117,9 +118,9 @@ int DisplayWinnerGTS(char Wins, char Gold, char OtherGold)
         s = "YOU TRAPPED THEM YOU WIN";
     } else if (Wins == -1){
         s = "YOU GOT TRAPPED YOU LOSE";
-    } else if (Gold == 5) {
+    } else if (Gold >= '5') {
         s = "YOU GOT 5 GOLD YOU WIN";
-    } else if (OtherGold == 5){
+    } else if (OtherGold >= '5'){
         s = "THEY GOT 5 GOLD YOU LOSE";
     }
 

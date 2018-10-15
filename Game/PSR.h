@@ -9,7 +9,7 @@
 #define PSR_H
 
 /** This is the whole paper scissors rock*/
-void PSR_Game(void);
+int PSR_Game(void);
 
 /** Displays character aee */
 void display_character (char character);

@@ -42,56 +42,63 @@ int main(void)
     MenuText_init();
     navswitch_init();
 
+	int GameRunning = 0;
     int NavSwitch_Val = 0;
     tinygl_text(" PAPER SCISSORS ROCK");
     //NavSwitch_Val = 0; This shouldn't be necessary but we'll test anyway.
+	while(1)
+	{
+		while (1)
+		{
+			GameRunning = 0;
+		    tinygl_update();
+		    navswitch_update();
 
-    while (1)
-    {
-        tinygl_update();
-        navswitch_update();
+		    /* setting up to go up characters and down to go down characters */
+		    if (navswitch_push_event_p(NAVSWITCH_NORTH)) {
+		        tinygl_clear();
+		        NavSwitch_Val = (NavSwitch_Val + 1) % 3;
+		        GetMenu(NavSwitch_Val);
 
-        /* setting up to go up characters and down to go down characters */
-        if (navswitch_push_event_p(NAVSWITCH_NORTH)) {
-            tinygl_clear();
-            NavSwitch_Val = (NavSwitch_Val + 1) % 3;
-            GetMenu(NavSwitch_Val);
+		    }
+		    if (navswitch_push_event_p(NAVSWITCH_SOUTH)) {
+		        tinygl_clear();
+		        NavSwitch_Val = (NavSwitch_Val - 1) % 3;
 
-        }
-        if (navswitch_push_event_p(NAVSWITCH_SOUTH)) {
-            tinygl_clear();
-            NavSwitch_Val = (NavSwitch_Val - 1) % 3;
+		        if (NavSwitch_Val == 0) {
+		            NavSwitch_Val = 3;
+		        }
 
-            if (NavSwitch_Val == 0) {
-                NavSwitch_Val = 3;
-            }
+		        GetMenu(NavSwitch_Val);
+		    }
 
-            GetMenu(NavSwitch_Val);
-        }
+		    /* This locks in the letter picked and clears the board from all presets for the isAnimatings */
+		    if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
+		        tinygl_clear();
+		        break;
+		    }
+		}
 
-        /* This locks in the letter picked and clears the board from all presets for the isAnimatings */
-        if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
-            tinygl_clear();
-            break;
-        }
-    }
+		while (NavSwitch_Val == 0 && GameRunning == 0) {
+		    GameRunning = PSR_Game();
+		}
 
-    while (NavSwitch_Val == 0) {
-        PSR_Game();
-    }
+		while (NavSwitch_Val == 1 && GameRunning == 0) {
+		    GameRunning = GTS_Game();
+		}
 
-    while (NavSwitch_Val == 1) {
-        GTS_Game();
-    }
+		if(NavSwitch_Val == 2) {
+			tinygl_text(" WORK IN PROGRESS");
+			while (1) {
+				navswitch_update();
+				tinygl_update();
 
-    tinygl_text(" WORK IN PROGRESS");
-    while (1) {
-        navswitch_update();
-        tinygl_update();
-
-        if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
-            tinygl_clear();
-            break;
-        }
-    }
+				if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
+				    tinygl_clear();
+				    break;
+				}
+			}
+	}
+	}
+	
 }

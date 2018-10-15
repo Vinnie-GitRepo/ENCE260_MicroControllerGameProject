@@ -23,6 +23,6 @@ int RoundEnd(char character, char Received_Char);
 /** Get who won */
 int WhoWon(char character, char Received_Char);
 
-
+int CheapInt(char Gold);
 
 #endif

@@ -69,7 +69,7 @@ int PSR_Game(void)
     int NavSwitch_Val = 0;
 
     pacer_init(PACER_RATE);
-    while (Wins != '5' && Loses != '5')
+    while (Wins != '3' && Loses != '3')
     {
         /* System inilzeed */
         system_init();
@@ -192,5 +192,5 @@ int PSR_Game(void)
         isAnimating = DisplayWinner(Wins);
     }
 
-    return 0;
+    return 1;
 }
