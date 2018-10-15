@@ -14,6 +14,7 @@
 #define LOOP_RATE 200
 
 
+/* Configures the board to high for easier manipulation */
 void ConfigBoard(void)
 {
 	pio_config_set(LEDMAT_ROW1_PIO, PIO_OUTPUT_HIGH);
@@ -31,6 +32,7 @@ void ConfigBoard(void)
 	
 }
 
+/* Clears the board of any on LED's */
 void ClearBoard(void)
 {
 	ConfigBoard();
@@ -49,6 +51,7 @@ void ClearBoard(void)
 
 }
 
+/* Turns all LED's on the board on */
 void FillBoard(void)
 {
 	ConfigBoard();
@@ -67,6 +70,7 @@ void FillBoard(void)
 	
 }
 
+/* plays a aniamtion of LED's that fill the board slowly top left to bottom right */
 int RollFill(void)
 {
 	tinygl_init (PACER_RATE);
@@ -83,7 +87,7 @@ int RollFill(void)
 			tinygl_update ();
 			tinygl_draw_point (pos, 1); 
 			pos.x += 1;
-			if(pos.x == 6) {
+			if(pos.x == 7) {
 				pos.x = 0;
 				pos.y += 1;
 			}
@@ -97,6 +101,39 @@ int RollFill(void)
 	return 1;
 }
 
+/* plays a aniamtion of LED's that fill the board slowly top left to bottom right.
+But this time does it faster*/
+int RollFillGTS(void)
+{
+	tinygl_init (PACER_RATE);
+	tinygl_clear();
+	tinygl_point_t pos;
+	TCCR1A = 0x00;
+	TCCR1B = 0x05;
+	TCCR1C = 0x00;
+	pos.x = 0;
+	pos.y = 0;
+	while (1)
+	{
+		if(TCNT1 > 300) {
+			tinygl_update ();
+			tinygl_draw_point (pos, 1); 
+			pos.x += 1;
+			if(pos.x == 7) {
+				pos.x = 0;
+				pos.y += 1;
+			}
+			TCNT1 = 0;
+		}
+		
+		if(pos.y ==  7) {
+			break;
+		}
+	}
+	return 1;
+}
+
+/* Makes sure all LED's are where they were before */
 int RollDel(void)
 {
 	tinygl_init (PACER_RATE);
@@ -112,7 +149,7 @@ int RollDel(void)
 		tinygl_update ();
 		tinygl_draw_point (pos, 1); 
 		pos.x += 1;
-		if(pos.x == 6) {
+		if(pos.x == 7) {
 			pos.x = 0;
 			pos.y += 1;
 		}
