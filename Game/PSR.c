@@ -16,12 +16,12 @@
 
 /* makes sure the right character is displayed through a buffer.
 Also puts the null byte of '\0'to show the end of a display_character */
-void display_character (char character)
+void display_character(char character)
 {
     char buffer[2];
     buffer[0] = character;
     buffer[1] = '\0';
-    tinygl_text (buffer);
+    tinygl_text(buffer);
 }
 
 
@@ -31,10 +31,10 @@ int PSR_Game(void)
     char Wins = '0';
     char Loses = '0';
 
-	/* Start timers. Well mainly TCNT1 */
-	TCCR1A = 0x00;
-	TCCR1B = 0x05;
-	TCCR1C = 0x00;	
+    /* Start timers. Well mainly TCNT1 */
+    TCCR1A = 0x00;
+    TCCR1B = 0x05;
+    TCCR1C = 0x00;
 
     /* The RPS character that displays on the LED screen while also being what is sent to the other UCFK4 */
     char character = 'R';
@@ -51,128 +51,134 @@ int PSR_Game(void)
     /* Starts up the infer red reader and sender */
     ir_uart_init();
 
-    
 
-    navswitch_init ();
+
+    navswitch_init();
     int NavSwitch_Val = 0;
 
-    pacer_init (PACER_RATE);
-	while(Wins != '5' && Loses != '5')
-	{
-		/* System inilzeed */
-    	system_init ();		
-		
-		/* Sets the waiting time for anything tinygl related */
-		OneText_init();
+    pacer_init(PACER_RATE);
+    while (Wins != '5' && Loses != '5')
+    {
+        /* System inilzeed */
+        system_init();
 
-		NavSwitch_Val = 0;
-		character = 'R';
-		/*While loop that will stop when you select rock, paper or scissors (R, P or S) through pushing down the navswitch */
-		while (1)
-		{
-			PORTC |=(1 <<2);
-		    /*Wait times for things to update */
-		    pacer_wait ();
-		    tinygl_update ();
-		    navswitch_update ();
-		    display_character (character);
-		    /* setting up to go up characters and down to go down characters */
-		    if (navswitch_push_event_p (NAVSWITCH_NORTH)) {
-		        NavSwitch_Val = (NavSwitch_Val + 1)%3;
+        /* Sets the waiting time for anything tinygl related */
+        OneText_init();
 
-		    }
-		    if (navswitch_push_event_p (NAVSWITCH_SOUTH)) {
-		        NavSwitch_Val = (NavSwitch_Val - 1)%3;
-		        if(NavSwitch_Val == 0) {
-		            NavSwitch_Val = 3;
-		        }
-		    }
+        NavSwitch_Val = 0;
+        character = 'R';
 
-			/* This locsk in the letter picked and clears the board from all presets for the isAnimatings */
-			if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
-				ClearBoard();
-				tinygl_clear();
-				tinygl_update ();
-				break;
-			}
-			/* gets the character corrsponding to the value */
-			character = GetPSR(NavSwitch_Val);
+        /*While loop that will stop when you select rock, paper or scissors (R, P or S) through pushing down the navswitch */
+        while (1)
+        {
+            PORTC |= (1 << 2);
 
-		}
+            /*Wait times for things to update */
+            pacer_wait();
+            tinygl_update();
+            navswitch_update();
+            display_character(character);
 
-		isAnimating = 0;
-		receivedCharacter = '0';
-		/* waits for the letter from the other UCFK4 to be sent while also sending it's own letter */
-		TCNT1 = 0;
-		while(1) {
-		    /* Playing the cool isAnimating for the lock in */
-			
-		    while(isAnimating == 0) {
-		        isAnimating = RollFill();
-		    }
-			
-		    /*The real start to the previous while loop */
+            /* setting up to go up characters and down to go down characters */
+            if (navswitch_push_event_p(NAVSWITCH_NORTH)) {
+                NavSwitch_Val = (NavSwitch_Val + 1) % 3;
 
-		    tinygl_update();
-			navswitch_update ();
-		    
+            }
 
-		    if(ir_uart_read_ready_p()) {
-		        receivedCharacter = ir_uart_getc();
-		    }
-		    /* This checks if the letter has been resived and if it is of the correct type.
-		    Also for later it checks if you both got the same thing */
-		    if ((receivedCharacter == 'R' || receivedCharacter == 'S' || receivedCharacter == 'P') && TCNT1 > 5)  {
-		        ir_uart_putc(character);
-		        ClearBoard();
-		    	tinygl_clear();
-		        tinygl_update();
-				RollDel();
-				PORTC &= ~(1 <<2);
-				TCNT1 = 50;
-		        break;
-		    }
+            if (navswitch_push_event_p(NAVSWITCH_SOUTH)) {
+                NavSwitch_Val = (NavSwitch_Val - 1) % 3;
+                if(NavSwitch_Val == 0) {
+                    NavSwitch_Val = 3;
+                }
+            }
+
+            /* This locsk in the letter picked and clears the board from all presets for the isAnimatings */
+            if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
+                ClearBoard();
+                tinygl_clear();
+                tinygl_update();
+                break;
+            }
+            /* gets the character corrsponding to the value */
+            character = GetPSR(NavSwitch_Val);
+
+        }
+
+        isAnimating = 0;
+        receivedCharacter = '0';
+        /* waits for the letter from the other UCFK4 to be sent while also sending it's own letter */
+        TCNT1 = 0;
+        while (1) {
+
+            /* Playing the cool isAnimating for the lock in */
+            while (isAnimating == 0) {
+                isAnimating = RollFill();
+            }
+
+            /*The real start to the previous while loop */
+            tinygl_update();
+            navswitch_update();
+
+            if (ir_uart_read_ready_p()) {
+                receivedCharacter = ir_uart_getc();
+            }
+
+            /* This checks if the letter has been resived and if it is of the correct type.
+            Also for later it checks if you both got the same thing */
+            if ((receivedCharacter == 'R' || receivedCharacter == 'S' || receivedCharacter == 'P') && TCNT1 > 5) {
+                ir_uart_putc(character);
+                ClearBoard();
+                tinygl_clear();
+                tinygl_update();
+                RollDel();
+                PORTC &= ~(1 << 2);
+                TCNT1 = 50;
+                break;
+            }
 
 
-			if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
-		        ir_uart_putc(character);
-			}
-			navswitch_update ();
-		}
+            if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
+                ir_uart_putc(character);
+            }
 
-		/*This is all for setting up and checking who won.
-		printing out either 'W' or 'L' */
-		Won = WhoWon(character, receivedCharacter);
-		if(Won == 1) {
-			character = 'W';
-			Wins += 1;
-		} else if(Won == 0) {
-			character = 'L';
-			Loses += 1;
-		} else {
-			character = 'D';
-		}
+            navswitch_update ();
+        }
 
-		/* Resetting Timer */
-		
-		TCNT1 = 0;
-		/* This loop just needs to be there for the messages to play there full way through. */
-		while(TCNT1 < 24000) {
-			receivedCharacter = 'F';
-		    tinygl_update();
-			display_character (character);
-		}
-		ClearBoard();
-		isAnimating = 0;
-		while(isAnimating == 0) {
-			isAnimating = DisplayScores(Wins, Loses);
-		}
-		
+        /*This is all for setting up and checking who won.
+        printing out either 'W' or 'L' */
+        Won = WhoWon(character, receivedCharacter);
+        if (Won == 1) {
+            character = 'W';
+            Wins += 1;
+        } else if (Won == 0) {
+            character = 'L';
+            Loses += 1;
+        } else {
+            character = 'D';
+        }
 
-	}
-	isAnimating = 0;
-	while(isAnimating == 0) {
-			isAnimating = DisplayWinner(Wins);
-	}
+        /* Resetting Timer */
+
+        TCNT1 = 0;
+        /* This loop just needs to be there for the messages to play there full way through. */
+        while (TCNT1 < 24000) {
+            receivedCharacter = 'F';
+            tinygl_update();
+            display_character(character);
+        }
+
+        ClearBoard();
+        isAnimating = 0;
+
+        while (isAnimating == 0) {
+            isAnimating = DisplayScores(Wins, Loses);
+        }
+    }
+
+    isAnimating = 0;
+    while (isAnimating == 0) {
+        isAnimating = DisplayWinner(Wins);
+    }
+
     return 0;
 }

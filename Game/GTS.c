@@ -20,12 +20,12 @@
 int GTS_Game(void)
 {
     char Gold = '0';
-	char OtherGold = '0';
-	char StolenGold = '0';
-	/* Start timers. Well mainly TCNT1 */
-	TCCR1A = 0x00;
-	TCCR1B = 0x05;
-	TCCR1C = 0x00;	
+    char OtherGold = '0';
+    char StolenGold = '0';
+    /* Start timers. Well mainly TCNT1 */
+    TCCR1A = 0x00;
+    TCCR1B = 0x05;
+    TCCR1C = 0x00;
 
     /* The RPS character that displays on the LED screen while also being what is sent to the other UCFK4 */
     char character = 'G';
@@ -42,187 +42,194 @@ int GTS_Game(void)
     /* Starts up the infer red reader and sender */
     ir_uart_init();
 
-    
 
-    navswitch_init ();
+
+    navswitch_init();
     int NavSwitch_Val = 0;
 
-    pacer_init (PACER_RATE);
-	while((Won != -1) &&  (Won != 3) && (Gold != '5') && (OtherGold != '5'))
-	{
-		/* System inilzeed */
-    	system_init ();		
-		
-		/* Sets the waiting time for anything tinygl related */
-		OneText_init();
+    pacer_init(PACER_RATE);
+    while ((Won != -1) && (Won != 3) && (Gold != '5') && (OtherGold != '5')) {
+        /* System inilzeed */
+        system_init();
 
-		NavSwitch_Val = 0;
-		character = 'G';
-		/*While loop that will stop when you select rock, paper or scissors (R, P or S) through pushing down the navswitch */
-		while (1)
-		{
-		    /*Wait times for things to update */
-		    pacer_wait ();
-		    tinygl_update ();
-		    navswitch_update ();
-		    display_character (character);
-		    /* setting up to go up characters and down to go down characters */
-		    if (navswitch_push_event_p (NAVSWITCH_NORTH)) {
-		        NavSwitch_Val = (NavSwitch_Val + 1)%3;
+        /* Sets the waiting time for anything tinygl related */
+        OneText_init();
 
-		    }
-		    if (navswitch_push_event_p (NAVSWITCH_SOUTH)) {
-		        NavSwitch_Val = (NavSwitch_Val - 1)%3;
-		        if(NavSwitch_Val == 0) {
-		            NavSwitch_Val = 3;
-		        }
-		    }
+        NavSwitch_Val = 0;
+        character = 'G';
 
-			/* This locsk in the letter picked and clears the board from all presets for the isAnimatings */
-			if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
-				ClearBoard();
-				tinygl_clear();
-				tinygl_update ();
-				break;
-			}
-			/* gets the character corrsponding to the value */
-			character = GetGTS(NavSwitch_Val);
-			
-		}
+        /*While loop that will stop when you select rock, paper or scissors (R, P or S) through pushing down the navswitch */
+        while (1)
+        {
+            /*Wait times for things to update */
+            pacer_wait();
+            tinygl_update();
+            navswitch_update();
+            display_character(character);
 
-		isAnimating = 0;
-		receivedCharacter = '0';
-		/* waits for the letter from the other UCFK4 to be sent while also sending it's own letter */
-		TCNT1 = 0;
-		while(1) {
-		    /* Playing the cool isAnimating for the lock in */
-		    while(isAnimating == 0) {
-		        isAnimating = RollFillGTS();
-		    }
+            /* setting up to go up characters and down to go down characters */
+            if (navswitch_push_event_p(NAVSWITCH_NORTH)) {
+                NavSwitch_Val = (NavSwitch_Val + 1) % 3;
 
-		    /*The real start to the previous while loop */
+            }
+            if (navswitch_push_event_p (NAVSWITCH_SOUTH)) {
+                NavSwitch_Val = (NavSwitch_Val - 1) % 3;
+                if(NavSwitch_Val == 0) {
+                    NavSwitch_Val = 3;
+                }
+            }
 
-		    tinygl_update();
+            /* This locsk in the letter picked and clears the board from all presets for the isAnimatings */
+            if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
+                ClearBoard();
+                tinygl_clear();
+                tinygl_update();
+                break;
+            }
 
-		    
+            /* gets the character corrsponding to the value */
+            character = GetGTS(NavSwitch_Val);
+        }
 
-		    if(ir_uart_read_ready_p()) {
-		        receivedCharacter = ir_uart_getc();
-		    }
+        isAnimating = 0;
+        receivedCharacter = '0';
+        /* waits for the letter from the other UCFK4 to be sent while also sending it's own letter */
+        TCNT1 = 0;
+        while (1) {
+            /* Playing the cool isAnimating for the lock in */
+            while (isAnimating == 0) {
+                isAnimating = RollFillGTS();
+            }
 
-		    /* This checks if the letter has been resived and if it is of the correct type.
-		    Also for later it checks if you both got the same thing */
-		    if ((receivedCharacter == 'G' || receivedCharacter == 'T' || receivedCharacter == 'S') && TCNT1 > 5)  {
-		        ir_uart_putc(character);
-		        ClearBoard();
-		    	tinygl_clear();
-		        tinygl_update();
-				RollDel();
-		        break;
-		    }
+            /*The real start to the previous while loop */
+
+            tinygl_update();
 
 
-		    navswitch_update ();
-			
-		    if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
-		        ir_uart_putc(character);
-				
-				/* Testing 
-				break;*/
-		    }
-		}
 
-		/*This is all for setting up and checking who won.
-		printing out either 'W' or 'L' */
-		ClearBoard();
-    	tinygl_clear();
+            if (ir_uart_read_ready_p()) {
+                receivedCharacter = ir_uart_getc();
+            }
+
+            /* This checks if the letter has been resived and if it is of the correct type.
+            Also for later it checks if you both got the same thing */
+            if ((receivedCharacter == 'G' || receivedCharacter == 'T' || receivedCharacter == 'S') && TCNT1 > 5)  {
+                ir_uart_putc(character);
+                ClearBoard();
+                tinygl_clear();
+                tinygl_update();
+                RollDel();
+                break;
+            }
+
+
+            navswitch_update();
+
+            if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
+                ir_uart_putc(character);
+
+                /* Testing
+                break;*/
+            }
+        }
+
+        /*This is all for setting up and checking who won.
+        printing out either 'W' or 'L' */
+        ClearBoard();
+        tinygl_clear();
         tinygl_update();
-		RollDel();
-		Won = RoundEnd(character, receivedCharacter);
-		if(Won == 1) {
-			Gold += 1;
-		}
-		/* Resetting Timer */
-		
-		/* This loop just needs to be there for the messages to play there full way through. */
-		isAnimating = 0;
-		
-		while(1) {
-			while(isAnimating == 0) {
-				isAnimating = RollFillGTS();
-				if(Won == 0) {
-					ir_uart_putc(Gold);
-				}else if(Won == 2) {
-					if(ir_uart_read_ready_p()) {
-				    	StolenGold = ir_uart_getc();
-					}
-				}else if((Won == -1) ||  (Won == 3)) {
-					ClearBoard();
-		    		tinygl_clear();
-					break;
-				}
-				TCNT1 = 0;
-			}
-		    /*The real start to the previous while loop */
+        RollDel();
+        Won = RoundEnd(character, receivedCharacter);
+        if(Won == 1) {
+            Gold += 1;
+        }
 
-		    tinygl_update();
+        /* Resetting Timer */
 
-			if(Won == 0) {
-				Gold = '0';
-			}
-			
-			if(Won == 2) {
-				StolenGold -= '0';
-				Gold -= '0';
-				Gold = ((int)Gold + (int)StolenGold);			
-				
-			}
+        /* This loop just needs to be there for the messages to play there full way through. */
+        isAnimating = 0;
 
-		    if((Won == -1) ||  (Won == 3)) {
-				ClearBoard();
-				tinygl_clear();
-				break;
-			}
+        while (1) {
+            while (isAnimating == 0) {
+                isAnimating = RollFillGTS();
 
-		    if(ir_uart_read_ready_p()) {
-		        OtherGold = ir_uart_getc();
-		    }
-		    /* This checks if the letter has been resived and if it is of the correct type.
-		    Also for later it checks if you both got the same thing */
-		    if ((OtherGold >= '0' && OtherGold < '6') && TCNT1 > 50)  {
-		        ir_uart_putc(Gold);
-		        ClearBoard();
-		    	tinygl_clear();
-		        tinygl_update();
-				RollDel();
-				TCNT1 = 50;
-		        break;
-		    }
+                if (Won == 0) {
+                    ir_uart_putc(Gold);
+                } else if (Won == 2) {
+                    if (ir_uart_read_ready_p()) {
+                        StolenGold = ir_uart_getc();
+                    }
+                } else if ((Won == -1) || (Won == 3)) {
+                    ClearBoard();
+                    tinygl_clear();
+                    break;
+                }
 
-			PORTC |=(1 <<2);
-		    navswitch_update ();
-			if (navswitch_push_event_p (NAVSWITCH_PUSH)) {
-		        ir_uart_putc(Gold);
-			}
-			
-		}
-		if((Won == -1) ||  (Won == 3)) {
-			ClearBoard();
-    		tinygl_clear();
-			break;
-		}
-		ClearBoard();
-		isAnimating = 0;
-		while(isAnimating == 0){
-			isAnimating = DisplayGold(Gold);
-			
-		}
-		
-	}
-	
-	isAnimating = 0;
-	while(isAnimating == 0) {
-			isAnimating = DisplayWinnerGTS(Won, Gold, OtherGold);
-	}
+                TCNT1 = 0;
+            }
+
+            /*The real start to the previous while loop */
+            tinygl_update();
+
+            if (Won == 0) {
+                Gold = '0';
+            }
+
+            if (Won == 2) {
+                StolenGold -= '0';
+                Gold -= '0';
+                Gold = ((int)Gold + (int)StolenGold);
+
+            }
+
+            if ((Won == -1) || (Won == 3)) {
+                ClearBoard();
+                tinygl_clear();
+                break;
+            }
+
+            if (ir_uart_read_ready_p()) {
+                OtherGold = ir_uart_getc();
+            }
+
+            /* This checks if the letter has been resived and if it is of the correct type.
+            Also for later it checks if you both got the same thing */
+            if ((OtherGold >= '0' && OtherGold < '6') && TCNT1 > 50)  {
+                ir_uart_putc(Gold);
+                ClearBoard();
+                tinygl_clear();
+                tinygl_update();
+                RollDel();
+                TCNT1 = 50;
+                break;
+            }
+
+            PORTC |= (1 << 2);
+            navswitch_update();
+
+            if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
+                ir_uart_putc(Gold);
+            }
+
+        }
+
+        if ((Won == -1) || (Won == 3)) {
+            ClearBoard();
+            tinygl_clear();
+            break;
+        }
+
+        ClearBoard();
+        isAnimating = 0;
+
+        while (isAnimating == 0){
+            isAnimating = DisplayGold(Gold);
+        }
+    }
+
+    isAnimating = 0;
+    while(isAnimating == 0) {
+            isAnimating = DisplayWinnerGTS(Won, Gold, OtherGold);
+    }
     return 0;
 }
