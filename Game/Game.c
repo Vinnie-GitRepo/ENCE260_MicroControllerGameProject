@@ -35,6 +35,7 @@ int main(void)
     navswitch_init();
 
     int game_running = 0;
+	int Is_animating = 0;
     int navswitch_val = 0;
     tinygl_text(" PAPER SCISSORS ROCK");
 
@@ -68,7 +69,10 @@ int main(void)
                 break;
             }
         }
-
+		while(!Is_animating) {
+		Is_animating = DisplayInfo();
+		}
+	
         while (navswitch_val == 0 && game_running == 0) {
             game_running = PSR_Game();
         }

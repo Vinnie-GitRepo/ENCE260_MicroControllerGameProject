@@ -45,6 +45,46 @@ int DisplayScores(char Wins, char Loses)
 }
 
 
+/*
+ * Displays insturctions
+ */
+int DisplayInfo(void)
+{
+
+	TCCR1A = 0x00;
+    TCCR1B = 0x05;
+    TCCR1C = 0x00;
+    system_init();
+    MenuText_init();
+
+    char s[] = "IF ALL LEDS OR TEXT PUSH DOWN NAV";
+	char Free_Space[] = " ";
+	int Loop = 0;
+    tinygl_text(s);
+    TCNT1 = 0;
+    while (1) {
+		if(TCNT1 > 62000) {
+			Loop += 1;
+			TCNT1 = 0;
+		}
+		if(Loop >= 6) {
+			FillBoard();
+			if(Loop == 6) {
+				tinygl_text(Free_Space);
+				Loop += 1;
+			}
+		}
+        tinygl_update();
+        navswitch_update();
+
+        if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
+            break;
+        }
+    }
+	ClearBoard();
+    return 1;
+}
+
 
 /*
  * Displays the Gold total until navsiwtch is pushed

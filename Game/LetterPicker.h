@@ -11,6 +11,9 @@
 /** Displays the scores*/
 int DisplayScores(char Wins, char Loses);
 
+/** Displays how to play the games */
+int DisplayInfo(void);
+
 /** Shows the gold you have */
 int DisplayGold(char Gold);
 

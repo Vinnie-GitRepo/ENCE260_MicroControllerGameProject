@@ -177,7 +177,11 @@ int GTS_Game(void)
 
                 TCNT1 = 0;
             }
-
+			if ((Won == -1) || (Won == 3)) {
+                    ClearBoard();
+                    tinygl_clear();
+                    break;
+             }
 
             // The real start to the previous while loop
             tinygl_update();
@@ -190,6 +194,8 @@ int GTS_Game(void)
                 if (ir_uart_read_ready_p()) {
                     OtherGold = ir_uart_getc();
                 }
+				
+
 
                 if ((OtherGold >= '0' && OtherGold < '6') && TCNT1 > 50)  {
                     ir_uart_putc(Gold);
@@ -208,11 +214,6 @@ int GTS_Game(void)
             PORTC &= ~(1 <<2);
             ir_uart_putc(Gold);
 
-            if ((Won == -1) || (Won == 3)) {
-                ClearBoard();
-                tinygl_clear();
-                break;
-            }	
 			if(receivedCharacter == 'S' && character != 'S') {
 				OtherGold += CheapInt(Gold);
 				Gold = '0';
