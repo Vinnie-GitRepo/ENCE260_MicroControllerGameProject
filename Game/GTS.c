@@ -23,28 +23,30 @@
 #define MESSAGE_RATE 200
 #define MESSAGE_TRANSFER 500
 
-char GetGold(char Gold, char OtherGold, char receivedCharacter, char Character)
+char Steal(char Gold, char OtherGold, char receivedCharacter, char Character)
 {
 	TCNT1 = 0;
-	
+	int RunThrough = 0;
 	while(TCNT1 < MESSAGE_TRANSFER) {
 		if(receivedCharacter == 'S' && Character != 'S') {
-			
+			if(RunThrough == 0) {
+				OtherGold += CheapInt(Gold);
+				RunThrough += 1;
+			}
 			ir_uart_putc(Gold);
-			
 			
 		} else if(Character == 'S' && receivedCharacter != 'S'){
 			 OtherGold = ir_uart_getc();
-			
 		}
 	}
 
-	if(Character == 'S' && receivedCharacter != 'S') {
-            Gold += CheapInt(OtherGold);
-			return Gold;
-   	} else {
-		OtherGold += CheapInt(Gold);
-		return OtherGold;
+			
+		
+	if(receivedCharacter == 'S' && Character != 'S') {
+			return OtherGold;
+	} else {
+		Gold += CheapInt(OtherGold);
+		return Gold;
 	}
 	
 }
@@ -131,6 +133,7 @@ int GTS_Game(void)
 
         isAnimating = 0;
         receivedCharacter = '0';
+
         /* waits for the letter from the other UCFK4 to be sent while also sending it's own letter */
         TCNT1 = 0;
         while (1) {
@@ -193,14 +196,6 @@ int GTS_Game(void)
         while (1) {
             while (isAnimating == 0) {
                 isAnimating = RollFillGTS();
-	
-				PORTC |= (1 << 2);
-				if(receivedCharacter == 'S' && character != 'S') {
-					OtherGold = GetGold( Gold, OtherGold, receivedCharacter, character);
-				} else if(character == 'S' && receivedCharacter != 'S'){
-					Gold = GetGold( Gold, OtherGold, receivedCharacter, character);
-				}
-	
                 if ((Won == -1) || (Won == 3)) {
                     ClearBoard();
                     tinygl_clear();
@@ -209,38 +204,62 @@ int GTS_Game(void)
 
                 TCNT1 = 0;
             }
-		
-			if(receivedCharacter == 'S' && character != 'S') {
-				Gold = '0';
-			} else if(character == 'S' && receivedCharacter != 'S'){
-				OtherGold = '0';
-			}
-			PORTC &= ~(1 <<2);
+			
+			
             /*The real start to the previous while loop */
             tinygl_update();
+			OtherGold = ' ';
+			while(1) {
+				PORTC |=(1 <<2);
+				navswitch_update();
+				tinygl_update();   
+				if (ir_uart_read_ready_p()) {
+                	OtherGold = ir_uart_getc();
+            	}
+				if ((OtherGold >= '0' && OtherGold < '6') && TCNT1 > 50)  {
+		            ir_uart_putc(Gold);
+		            ClearBoard();
+		            tinygl_clear();
+		            tinygl_update();
+		            RollDel();
+		            TCNT1 = 50;
+		            break;
+		        }
+				 if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
+		            ir_uart_putc(Gold);
 
-
+		            /* Testing
+		            break;*/
+            	}
+			}
+			PORTC &= ~(1 <<2);
+			
+			ir_uart_putc(Gold);
             if ((Won == -1) || (Won == 3)) {
                 ClearBoard();
                 tinygl_clear();
                 break;
             }
 			
-
+			if(receivedCharacter == 'S' && character != 'S') {
+				OtherGold += CheapInt(Gold);
+				Gold = '0';
+				
+			} else if(character == 'S' && receivedCharacter != 'S'){
+				Gold += CheapInt(OtherGold);
+				OtherGold = '0';
+				/*PORTC &= ~(1 <<2);*/
+			}
             /* This checks if the letter has been resived and if it is of the correct type.
             Also for later it checks if you both got the same thing */
-            if ((OtherGold >= '0' && OtherGold < '6') && TCNT1 > 50)  {
-                ir_uart_putc(Gold);
-                ClearBoard();
-                tinygl_clear();
-                tinygl_update();
-                RollDel();
-                TCNT1 = 50;
-                break;
-            }
+			isAnimating = 0;
+			
+		    while (isAnimating == 0){
+		        isAnimating = DisplayGold(Gold, OtherGold);
+		    }
 
+            break;
             
-            navswitch_update();
 
         }
 		
@@ -251,11 +270,7 @@ int GTS_Game(void)
         }
 
         ClearBoard();
-        isAnimating = 0;
-
-        while (isAnimating == 0){
-            isAnimating = DisplayGold(Gold, OtherGold);
-        }
+        
     }
 
     isAnimating = 0;
