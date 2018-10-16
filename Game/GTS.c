@@ -21,35 +21,7 @@
 
 #define PACER_RATE 3000
 #define MESSAGE_RATE 200
-#define MESSAGE_TRANSFER 500
 
-char Steal(char Gold, char OtherGold, char receivedCharacter, char Character)
-{
-	TCNT1 = 0;
-	int RunThrough = 0;
-	while(TCNT1 < MESSAGE_TRANSFER) {
-		if(receivedCharacter == 'S' && Character != 'S') {
-			if(RunThrough == 0) {
-				OtherGold += CheapInt(Gold);
-				RunThrough += 1;
-			}
-			ir_uart_putc(Gold);
-			
-		} else if(Character == 'S' && receivedCharacter != 'S'){
-			 OtherGold = ir_uart_getc();
-		}
-	}
-
-			
-		
-	if(receivedCharacter == 'S' && Character != 'S') {
-			return OtherGold;
-	} else {
-		Gold += CheapInt(OtherGold);
-		return Gold;
-	}
-	
-}
 
 
 /*
@@ -138,7 +110,7 @@ int GTS_Game(void)
         TCNT1 = 0;
         while (1) {
             /* Playing the cool isAnimating for the lock in */
-            while (isAnimating == 0) {
+            while (!isAnimating) {
                 isAnimating = RollFillGTS();
             }
 
@@ -255,7 +227,7 @@ int GTS_Game(void)
 			isAnimating = 0;
 			
 		    while (isAnimating == 0){
-		        isAnimating = DisplayGold(Gold, OtherGold);
+		        isAnimating = DisplayGold(Gold);
 		    }
 
             break;

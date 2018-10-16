@@ -17,7 +17,7 @@
 #include "Tables.h"
 #include "Animations.h"
 #include "Starter.h"
-
+#include "PSR.h"
 
 /*
  * Displays the scores of wins and loses until navsiwtch is pushed
@@ -48,7 +48,7 @@ int DisplayScores(char Wins, char Loses)
 /*
  * Displays the Gold total until navsiwtch is pushed
  */
-int DisplayGold(char Gold, char OtherGold)
+int DisplayGold(char Gold)
 {
 
     system_init();
@@ -57,7 +57,6 @@ int DisplayGold(char Gold, char OtherGold)
     TCCR1B = 0x05;
     TCCR1C = 0x00;
 
-	int Go = 0;
     /*char s[] = { ' ','G', 'O', 'L', 'D', ' ', Gold}; */
 
     
@@ -67,8 +66,6 @@ int DisplayGold(char Gold, char OtherGold)
 			display_character('G');
 		}else if(TCNT1 > 10000 && TCNT1 < 30000) {
 			display_character(Gold);
-		} else {
-			display_character(OtherGold);
 		}
         tinygl_update();
         navswitch_update();
@@ -123,6 +120,7 @@ int DisplayWinnerGTS(char Wins, char Gold, char OtherGold)
 
     char* s;
     ScrollText_init();
+	s = "inviald End Game";
     if (Wins == 3) {
         s = "YOU TRAPPED THEM YOU WIN";
     } else if (Wins == -1){
