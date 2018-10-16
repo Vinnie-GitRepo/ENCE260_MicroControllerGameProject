@@ -12,7 +12,7 @@
 int DisplayScores(char Wins, char Loses);
 
 /** Shows the gold you have */
-int DisplayGold(char Gold, char OtherGold);
+int DisplayGold(char Gold);
 
 /** Displays text saying if you won or lost */
 int DisplayWinner(char Wins);

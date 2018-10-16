@@ -36,6 +36,7 @@ int DisplayScores(char Wins, char Loses)
 
         tinygl_update();
         navswitch_update();
+
         if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
             break;
         }
@@ -50,25 +51,26 @@ int DisplayScores(char Wins, char Loses)
  */
 int DisplayGold(char Gold)
 {
-
     system_init();
     OneText_init();
-	TCCR1A = 0x00;
+
+    TCCR1A = 0x00;
     TCCR1B = 0x05;
     TCCR1C = 0x00;
 
-    /*char s[] = { ' ','G', 'O', 'L', 'D', ' ', Gold}; */
 
-    
     TCNT1 = 0;
     while (1) {
 		if(TCNT1 < 10000) {
 			display_character('G');
 		}else if(TCNT1 > 10000 && TCNT1 < 30000) {
 			display_character(Gold);
+		} else {
+			TCNT1 = 0;
 		}
         tinygl_update();
         navswitch_update();
+
         if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
             break;
         }
@@ -109,6 +111,8 @@ int DisplayWinner(char Wins)
 
     return 1;
 }
+
+
 
 /*
  * Displays winners of GTS and the type of victory/loss it was

@@ -23,4 +23,7 @@ int RollFillGTS(void);
 /** Fixes the board with  LEDS in a nice way */
 int RollDel (void);
 
+/** Displays character aee */
+void display_character (char character);
+
 #endif

@@ -11,6 +11,4 @@
 /** This is the whole paper scissors rock*/
 int PSR_Game(void);
 
-/** Displays character aee */
-void display_character (char character);
 #endif

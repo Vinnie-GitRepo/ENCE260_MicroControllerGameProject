@@ -26,14 +26,6 @@
 
 
 /*
- * Makes sure the right character is displayed through a buffer.
- * Also puts the null byte '\0' to show the end of a display_character.
- */
-
-
-
-
-/*
  * What runs the game
  */
 int main(void)
@@ -42,63 +34,62 @@ int main(void)
     MenuText_init();
     navswitch_init();
 
-	int GameRunning = 0;
-    int NavSwitch_Val = 0;
+    int game_running = 0;
+    int navswitch_val = 0;
     tinygl_text(" PAPER SCISSORS ROCK");
-    //NavSwitch_Val = 0; This shouldn't be necessary but we'll test anyway.
-	while(1)
-	{
-		while (1)
-		{
-			GameRunning = 0;
-		    tinygl_update();
-		    navswitch_update();
 
-		    /* setting up to go up characters and down to go down characters */
-		    if (navswitch_push_event_p(NAVSWITCH_NORTH)) {
-		        tinygl_clear();
-		        NavSwitch_Val = (NavSwitch_Val + 1) % 3;
-		        GetMenu(NavSwitch_Val);
+    while (1) {
+        while (1) {
+            game_running = 0;
+            tinygl_update();
+            navswitch_update();
 
-		    }
-		    if (navswitch_push_event_p(NAVSWITCH_SOUTH)) {
-		        tinygl_clear();
-		        NavSwitch_Val = (NavSwitch_Val - 1) % 3;
+            // setting up to go up characters and down to go down characters
+            if (navswitch_push_event_p(NAVSWITCH_NORTH)) {
+                tinygl_clear();
+                navswitch_val = (navswitch_val + 1) % 3;
+                GetMenu(navswitch_val);
 
-		        if (NavSwitch_Val == 0) {
-		            NavSwitch_Val = 3;
-		        }
+            }
+            if (navswitch_push_event_p(NAVSWITCH_SOUTH)) {
+                tinygl_clear();
+                navswitch_val = (navswitch_val - 1) % 3;
 
-		        GetMenu(NavSwitch_Val);
-		    }
+                if (navswitch_val == 0) {
+                    navswitch_val = 3;
+                }
 
-		    /* This locks in the letter picked and clears the board from all presets for the isAnimatings */
-		    if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
-		        tinygl_clear();
-		        break;
-		    }
-		}
+                GetMenu(navswitch_val);
+            }
 
-		while (NavSwitch_Val == 0 && GameRunning == 0) {
-		    GameRunning = PSR_Game();
-		}
+            // This locks in the letter picked and clears the board from all presets for the isAnimatings
+            if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
+                tinygl_clear();
+                break;
+            }
+        }
 
-		while (NavSwitch_Val == 1 && GameRunning == 0) {
-		    GameRunning = GTS_Game();
-		}
+        while (navswitch_val == 0 && game_running == 0) {
+            game_running = PSR_Game();
+        }
 
-		if(NavSwitch_Val == 2) {
-			tinygl_text(" WORK IN PROGRESS");
-			while (1) {
-				navswitch_update();
-				tinygl_update();
+        while (navswitch_val == 1 && game_running == 0) {
+            game_running = GTS_Game();
+        }
 
-				if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
-				    tinygl_clear();
-				    break;
-				}
-			}
-	}
-	}
-	
+        if (navswitch_val == 2) {
+            tinygl_text(" WORK IN PROGRESS");
+
+            while (1) {
+                navswitch_update();
+                tinygl_update();
+
+                if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
+                    tinygl_clear();
+                    break;
+                }
+            }
+        }
+    }
+
 }
