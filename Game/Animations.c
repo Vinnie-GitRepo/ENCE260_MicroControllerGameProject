@@ -85,6 +85,20 @@ void FillBoard(void)
 
 
 /*
+ * Makes sure the right character is displayed through a buffer.
+ * Also puts the null byte of '\0'to show the end of a display_character
+ */
+void display_character(char character)
+{
+    char buffer[2];
+    buffer[0] = character;
+    buffer[1] = '\0';
+    tinygl_text(buffer);
+}
+
+
+
+/*
  * Plays an animation of LED's slowly filling the
  * board from the top left to the bottom right.
  */
@@ -101,8 +115,7 @@ int RollFill(void)
     pos.x = 0;
     pos.y = 0;
 
-    while (1)
-    {
+    while (1) {
         if (TCNT1 > 500) {
             tinygl_update();
             tinygl_draw_point(pos, 1);
@@ -144,8 +157,8 @@ int RollFillGTS(void)
     pos.y = 0;
 
 
-    while (1)
-    {
+    while (1) {
+
         if (TCNT1 > 300) {
             tinygl_update();
             tinygl_draw_point(pos, 1);
@@ -178,16 +191,12 @@ int RollDel(void)
     tinygl_clear();
     tinygl_point_t pos;
 
-    TCCR1A = 0x00;
-    TCCR1B = 0x05;
-    TCCR1C = 0x00;
-
     pos.x = 0;
     pos.y = 0;
 
 
-    while (1)
-    {
+    while (1) {
+
         tinygl_update();
         tinygl_draw_point(pos, 1);
         pos.x += 1;

@@ -1,10 +1,10 @@
-/*
-# File:   Animations.c
-# Author: Group417
-# Date:   11 OCT 2018
-# Descr:  Animations on the LED board
-
-LetterPicker.o */
+/***********************************************************************
+# File:          Starter.c
+# Group:         417
+# Authors:       Robert Condon, Vinnie Jamieson
+# Description:   Initilises settings for the different game stages
+# Last Modified: 15 OCT 2018
+***********************************************************************/
 
 #include "LetterPicker.h"
 #include "system.h"
@@ -25,51 +25,66 @@ LetterPicker.o */
 #define PACER_RATE_MENU 500
 #define MESSAGE_RATE_MENU 3
 
-/* Sets up tinygl and pacer for when it's displaying one character rather then a message */
+
+/*
+ * Sets up tinygl and pacer for when it's displaying one character rather then a message
+ */
 void OneText_init(void)
 {
-	pacer_init (PACER_RATE);
-	tinygl_init (PACER_RATE);
+    pacer_init (PACER_RATE);
+    tinygl_init (PACER_RATE);
     tinygl_font_set (&font5x7_2);
     tinygl_text_speed_set (MESSAGE_RATE);
-	tinygl_text_dir_set (0);
+    tinygl_text_dir_set (0);
 }
 
-/* Sets up tinygl and pacer for the text that displays on the menu*/
+
+
+/*
+ * Sets up tinygl and pacer for the text that displays on the menu
+ */
 void MenuText_init(void)
 {
-	pacer_init (PACER_RATE_MENU);
-	tinygl_init (PACER_RATE_MENU);
-	tinygl_font_set (&font3x5_1);
-	tinygl_text_dir_set (1);
-	tinygl_text_speed_set (MESSAGE_RATE_MENU);
-	tinygl_text_mode_set (TINYGL_TEXT_MODE_SCROLL);
+    pacer_init (PACER_RATE_MENU);
+    tinygl_init (PACER_RATE_MENU);
+    tinygl_font_set (&font3x5_1);
+    tinygl_text_dir_set (1);
+    tinygl_text_speed_set (MESSAGE_RATE_MENU);
+    tinygl_text_mode_set (TINYGL_TEXT_MODE_SCROLL);
 }
 
-/* Sets up tinygl and pacer for any scorlling text other then menu*/
+
+
+/*
+ * Sets up tinygl and pacer for any scorlling text other then menu
+ */
 void ScrollText_init(void)
 {
-	pacer_init (PACER_RATE_SCROLL);
-	tinygl_init (PACER_RATE_SCROLL);
-	tinygl_font_set (&font3x5_1);
-	tinygl_text_dir_set (1);
-	tinygl_text_speed_set (MESSAGE_RATE_SCROLL);
-	tinygl_text_mode_set (TINYGL_TEXT_MODE_SCROLL);
+    pacer_init (PACER_RATE_SCROLL);
+    tinygl_init (PACER_RATE_SCROLL);
+    tinygl_font_set (&font3x5_1);
+    tinygl_text_dir_set (1);
+    tinygl_text_speed_set (MESSAGE_RATE_SCROLL);
+    tinygl_text_mode_set (TINYGL_TEXT_MODE_SCROLL);
 }
 
-/* Sets up pio so it's easy to manipulate */
+
+
+/*
+ * Sets up pio so it's easy to manipulate
+ */
 void PioBroad_init(void)
 {
-	pio_config_set(LEDMAT_ROW1_PIO, PIO_OUTPUT_HIGH);
-	pio_config_set(LEDMAT_ROW2_PIO, PIO_OUTPUT_HIGH);
-	pio_config_set(LEDMAT_ROW3_PIO, PIO_OUTPUT_HIGH);
-	pio_config_set(LEDMAT_ROW4_PIO, PIO_OUTPUT_HIGH);
-	pio_config_set(LEDMAT_ROW5_PIO, PIO_OUTPUT_HIGH);
-	pio_config_set(LEDMAT_ROW6_PIO, PIO_OUTPUT_HIGH);
-	pio_config_set(LEDMAT_ROW7_PIO, PIO_OUTPUT_HIGH);
-	pio_config_set(LEDMAT_COL1_PIO, PIO_OUTPUT_HIGH);
-	pio_config_set(LEDMAT_COL2_PIO, PIO_OUTPUT_HIGH);
-	pio_config_set(LEDMAT_COL3_PIO, PIO_OUTPUT_HIGH);	
-	pio_config_set(LEDMAT_COL4_PIO, PIO_OUTPUT_HIGH);	
-	pio_config_set(LEDMAT_COL5_PIO, PIO_OUTPUT_HIGH);
+    pio_config_set(LEDMAT_ROW1_PIO, PIO_OUTPUT_HIGH);
+    pio_config_set(LEDMAT_ROW2_PIO, PIO_OUTPUT_HIGH);
+    pio_config_set(LEDMAT_ROW3_PIO, PIO_OUTPUT_HIGH);
+    pio_config_set(LEDMAT_ROW4_PIO, PIO_OUTPUT_HIGH);
+    pio_config_set(LEDMAT_ROW5_PIO, PIO_OUTPUT_HIGH);
+    pio_config_set(LEDMAT_ROW6_PIO, PIO_OUTPUT_HIGH);
+    pio_config_set(LEDMAT_ROW7_PIO, PIO_OUTPUT_HIGH);
+    pio_config_set(LEDMAT_COL1_PIO, PIO_OUTPUT_HIGH);
+    pio_config_set(LEDMAT_COL2_PIO, PIO_OUTPUT_HIGH);
+    pio_config_set(LEDMAT_COL3_PIO, PIO_OUTPUT_HIGH);
+    pio_config_set(LEDMAT_COL4_PIO, PIO_OUTPUT_HIGH);
+    pio_config_set(LEDMAT_COL5_PIO, PIO_OUTPUT_HIGH);
 }

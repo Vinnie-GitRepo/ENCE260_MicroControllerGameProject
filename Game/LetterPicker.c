@@ -53,25 +53,28 @@ int DisplayGold(char Gold, char OtherGold)
 
     system_init();
     OneText_init();
-	TCCR1A = 0x00;
+    TCCR1A = 0x00;
     TCCR1B = 0x05;
     TCCR1C = 0x00;
 
-	int Go = 0;
+    int Go = 0;
     /*char s[] = { ' ','G', 'O', 'L', 'D', ' ', Gold}; */
 
-    
+
     TCNT1 = 0;
     while (1) {
-		if(TCNT1 < 10000) {
-			display_character('G');
-		}else if(TCNT1 > 10000 && TCNT1 < 30000) {
-			display_character(Gold);
-		} else {
-			display_character(OtherGold);
-		}
+
+        if (TCNT1 < 10000) {
+            display_character('G');
+        } else if (TCNT1 > 10000 && TCNT1 < 30000) {
+            display_character(Gold);
+        } else {
+            display_character(OtherGold);
+        }
+
         tinygl_update();
         navswitch_update();
+
         if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
             break;
         }

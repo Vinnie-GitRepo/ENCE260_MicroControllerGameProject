@@ -22,18 +22,6 @@
 #define MESSAGE_RATE 200
 
 
-/*
- * Makes sure the right character is displayed through a buffer.
- * Also puts the null byte of '\0'to show the end of a display_character
- */
-void display_character(char character)
-{
-    char buffer[2];
-    buffer[0] = character;
-    buffer[1] = '\0';
-    tinygl_text(buffer);
-}
-
 
 /*
  * What runs the game
