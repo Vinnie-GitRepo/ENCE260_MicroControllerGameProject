@@ -31,11 +31,11 @@
  */
 void OneText_init(void)
 {
-    pacer_init (PACER_RATE);
-    tinygl_init (PACER_RATE);
-    tinygl_font_set (&font5x7_2);
-    tinygl_text_speed_set (MESSAGE_RATE);
-    tinygl_text_dir_set (0);
+    pacer_init(PACER_RATE);
+    tinygl_init(PACER_RATE);
+    tinygl_font_set(&font5x7_2);
+    tinygl_text_speed_set(MESSAGE_RATE);
+    tinygl_text_dir_set(0);
 }
 
 
@@ -45,12 +45,12 @@ void OneText_init(void)
  */
 void MenuText_init(void)
 {
-    pacer_init (PACER_RATE_MENU);
-    tinygl_init (PACER_RATE_MENU);
-    tinygl_font_set (&font3x5_1);
-    tinygl_text_dir_set (1);
-    tinygl_text_speed_set (MESSAGE_RATE_MENU);
-    tinygl_text_mode_set (TINYGL_TEXT_MODE_SCROLL);
+    pacer_init(PACER_RATE_MENU);
+    tinygl_init(PACER_RATE_MENU);
+    tinygl_font_set(&font3x5_1);
+    tinygl_text_dir_set(1);
+    tinygl_text_speed_set(MESSAGE_RATE_MENU);
+    tinygl_text_mode_set(TINYGL_TEXT_MODE_SCROLL);
 }
 
 
@@ -60,12 +60,12 @@ void MenuText_init(void)
  */
 void ScrollText_init(void)
 {
-    pacer_init (PACER_RATE_SCROLL);
-    tinygl_init (PACER_RATE_SCROLL);
-    tinygl_font_set (&font3x5_1);
-    tinygl_text_dir_set (1);
-    tinygl_text_speed_set (MESSAGE_RATE_SCROLL);
-    tinygl_text_mode_set (TINYGL_TEXT_MODE_SCROLL);
+    pacer_init(PACER_RATE_SCROLL);
+    tinygl_init(PACER_RATE_SCROLL);
+    tinygl_font_set(&font3x5_1);
+    tinygl_text_dir_set(1);
+    tinygl_text_speed_set(MESSAGE_RATE_SCROLL);
+    tinygl_text_mode_set(TINYGL_TEXT_MODE_SCROLL);
 }
 
 

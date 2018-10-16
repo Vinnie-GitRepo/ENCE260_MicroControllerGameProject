@@ -13,22 +13,25 @@
 /*
  * Gets the Symbol for paper scisosrs or rock, from an int mod 3
  */
-void GetMenu(int NavSwitch_Val)
+void GetMenu(int navswitch_val)
 {
-    char* Menu = " PAPER SCISSORS ROCK";
-    switch (NavSwitch_Val)
+    char* menu = " PAPER SCISSORS ROCK";
+    switch (navswitch_val)
         {
             case 0:
-                Menu = " PAPER SCISSORS ROCK";
+                menu = " PAPER SCISSORS ROCK";
                 break;
+
             case 1:
-                Menu = " GOLD THIEF STEAL";
+                menu = " GOLD THIEF STEAL";
                 break;
+
             case 2:
-                Menu = " QUIT";
+                menu = " QUIT";
                 break;
         }
-    tinygl_text(Menu);
+
+    tinygl_text(menu);
 }
 
 
@@ -36,17 +39,19 @@ void GetMenu(int NavSwitch_Val)
 /*
  * Gets the Symbol for paper scisosrs or rock, from an int mod 3
  */
-char GetPSR(int NavSwitch_Val)
+char GetPSR(int navswitch_val)
 {
     char character = 'R';
-    switch (NavSwitch_Val)
+    switch (navswitch_val)
     {
         case 0:
             character = 'R';
             break;
+
         case 1:
             character = 'S';
             break;
+
         case 2:
             character = 'P';
             break;
@@ -54,53 +59,63 @@ char GetPSR(int NavSwitch_Val)
     return character;
 }
 
+
+
 /*
  * Get gold steal trap from int
  */
-char GetGTS(int NavSwitch_Val)
+char GetGTS(int navswitch_val)
 {
     char character = 'G';
-    switch (NavSwitch_Val)
+    switch (navswitch_val)
     {
         case 0:
             character = 'G';
             break;
+
         case 1:
             character = 'S';
             break;
+
         case 2:
             character = 'T';
             break;
     }
+
     return character;
 }
+
 
 
 /*
  * Converts the char representing a gold value to an int for calculations
  */
 int CheapInt(char Gold) {
-    int GoldInt = 0;
+    int gold_int = 0;
     switch (Gold)
     {
         case '0':
-            GoldInt = 0;
+            gold_int = 0;
             break;
+
         case '1':
-            GoldInt = 1;
+            gold_int = 1;
             break;
+
         case '2':
-            GoldInt = 2;
+            gold_int = 2;
             break;
+
         case '3':
-            GoldInt = 3;
+            gold_int = 3;
             break;
+
         case '4':
-            GoldInt = 4;
+            gold_int = 4;
             break;
     }
 
-    return GoldInt;
+    return gold_int;
 }
 
 
@@ -108,75 +123,76 @@ int CheapInt(char Gold) {
 /*
  * Selects from the different types of round endings
  */
-int RoundEnd(char character, char Received_Char)
+int RoundEnd(char character, char received_char)
 {
     // Defults to if both players did Gold
-    int Won = 1;
+    int won = 1;
     switch (character)
     {
         // If you went gold and they stole it
         case 'G':
-            if (Received_Char == 'S') {
-                Won = 0;
+            if (received_char == 'S') {
+                won = 0;
             }
             break;
 
         // If you went Trap and they went steal, Therefore you just win
         case 'T':
-            if (Received_Char == 'S') {
-                Won = 3;
+            if (received_char == 'S') {
+                won = 3;
             }
             break;
 
         // If you went Steal and they went trap, Therefore you just lose
         case 'S':
-            if (Received_Char == 'T') {
-                Won = -1;
+            if (received_char == 'T') {
+                won = -1;
             }
-            if (Received_Char == 'S') {
-                Won = 2;
+            if (received_char == 'S') {
+                won = 2;
             }
-
     }
 
-    return Won;
+    return won;
 }
+
 
 
 /*
  * Gets who won out of two results then returns 1 for won 0 for not won
  */
-int WhoWon(char character, char Received_Char)
+int WhoWon(char character, char received_char)
 {
-    int Won = 0;
+    int won = 0;
     switch (character)
     {
         case 'R':
-            if (Received_Char == 'S') {
-                Won = 1;
+            if (received_char == 'S') {
+                won = 1;
             }
-            if (Received_Char == 'R') {
-                Won = 2;
+            if (received_char == 'R') {
+                won = 2;
             }
             break;
+
         case 'S':
-            if (Received_Char == 'P') {
-                Won = 1;
+            if (received_char == 'P') {
+                won = 1;
             }
-            if (Received_Char == 'S') {
-                Won = 2;
+            if (received_char == 'S') {
+                won = 2;
             }
             break;
 
         case 'P':
-            if (Received_Char == 'R') {
-                Won = 1;
+            if (received_char == 'R') {
+                won = 1;
             }
-            if (Received_Char == 'P') {
-                Won = 2;
+            if (received_char == 'P') {
+                won = 2;
             }
             break;
-
     }
-    return Won;
+
+    return won;
 }

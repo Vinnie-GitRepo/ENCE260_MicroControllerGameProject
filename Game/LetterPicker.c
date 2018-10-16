@@ -36,6 +36,7 @@ int DisplayScores(char Wins, char Loses)
 
         tinygl_update();
         navswitch_update();
+
         if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
             break;
         }
@@ -50,9 +51,9 @@ int DisplayScores(char Wins, char Loses)
  */
 int DisplayGold(char Gold, char OtherGold)
 {
-
     system_init();
     OneText_init();
+
     TCCR1A = 0x00;
     TCCR1B = 0x05;
     TCCR1C = 0x00;
@@ -115,6 +116,8 @@ int DisplayWinner(char Wins)
 
     return 1;
 }
+
+
 
 /*
  * Displays winners of GTS and the type of victory/loss it was
