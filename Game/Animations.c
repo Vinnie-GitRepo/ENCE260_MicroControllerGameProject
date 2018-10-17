@@ -3,7 +3,7 @@
 # Group:         417
 # Authors:       Robert Condon, Vinnie Jamieson
 # Description:   Module for LED game animations on the fun kit
-# Last Modified: 15 OCT 2018
+# Last Modified: 17 OCT 2018
 ***********************************************************************/
 
 #include "Animations.h"
@@ -158,7 +158,6 @@ int RollFillGTS(void)
 
 
     while (1) {
-
         if (TCNT1 > 300) {
             tinygl_update();
             tinygl_draw_point(pos, 1);
@@ -196,7 +195,6 @@ int RollDel(void)
 
 
     while (1) {
-
         tinygl_update();
         tinygl_draw_point(pos, 1);
         pos.x += 1;

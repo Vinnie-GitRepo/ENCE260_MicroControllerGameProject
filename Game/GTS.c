@@ -3,7 +3,7 @@
 # Group:         417
 # Authors:       Robert Condon, Vinnie Jamieson
 # Description:   Module for our assignment's Gold Trap Steal game
-# Last Modified: 15 OCT 2018
+# Last Modified: 17 OCT 2018
 ***********************************************************************/
 
 #include "system.h"
@@ -70,10 +70,9 @@ int GTS_Game(void)
         character = 'G';
         Won = 5;
 
-        // While loop that will stop when you select rock, paper or scissors (R, P or S) through pushing down the navswitch
-        while (1)
-        {
-            // Wait times for things to update
+        // Loop which continues until a choice has been made via the navswitch
+        while (1) {
+            // Wait times for updates
             pacer_wait();
             tinygl_update();
             navswitch_update();
@@ -87,12 +86,12 @@ int GTS_Game(void)
 
             if (navswitch_push_event_p (NAVSWITCH_SOUTH)) {
                 navswitch_val = (navswitch_val - 1) % 3;
-                if(navswitch_val == 0) {
+                if (navswitch_val == 0) {
                     navswitch_val = 3;
                 }
             }
 
-            // This locsk in the letter picked and clears the board from all presets for the isAnimatings
+            // Sets the selected letter, clearing the board from all presets for the isAnimatings
             if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
                 ClearBoard();
                 tinygl_clear();
@@ -100,14 +99,14 @@ int GTS_Game(void)
                 break;
             }
 
-            // gets the character corrsponding to the value
+            // Gets the character corresponding to the value
             character = GetGTS(navswitch_val);
         }
 
         isAnimating = 0;
         receivedCharacter = '0';
 
-        // waits for the letter from the other UCFK4 to be sent while also sending it's own letter
+        // Waits for the letter from the other UCFK4 to be sent while also sending its own letter
         TCNT1 = 0;
         while (1) {
             // Playing the cool isAnimating for the lock in
@@ -116,16 +115,13 @@ int GTS_Game(void)
             }
 
             // The real start to the previous while loop
-
             tinygl_update();
-
-
 
             if (ir_uart_read_ready_p()) {
                 receivedCharacter = ir_uart_getc();
             }
 
-            // This checks if the letter has been resived and if it is of the correct type
+            // This checks if the letter has been received and if it is of the correct type
             // Also for later it checks if you both got the same thing
             if ((receivedCharacter == 'G' || receivedCharacter == 'T' || receivedCharacter == 'S') && TCNT1 > 5)  {
                 ir_uart_putc(character);
@@ -153,7 +149,7 @@ int GTS_Game(void)
         tinygl_clear();
         tinygl_update();
         RollDel();
-        Won = RoundEnd(character, receivedCharacter);
+        Won = determineRoundOutcome(character, receivedCharacter);
         if(character == 'G') {
             Gold += 1;
         }
@@ -177,11 +173,12 @@ int GTS_Game(void)
 
                 TCNT1 = 0;
             }
-			if ((Won == -1) || (Won == 3)) {
-                    ClearBoard();
-                    tinygl_clear();
-                    break;
-             }
+
+            if ((Won == -1) || (Won == 3)) {
+                ClearBoard();
+                tinygl_clear();
+                break;
+            }
 
             // The real start to the previous while loop
             tinygl_update();
@@ -194,10 +191,8 @@ int GTS_Game(void)
                 if (ir_uart_read_ready_p()) {
                     OtherGold = ir_uart_getc();
                 }
-				
 
-
-                if ((OtherGold >= '0' && OtherGold < '6') && TCNT1 > 50)  {
+                if ((OtherGold >= '0' && OtherGold < '6') && TCNT1 > 50) {
                     ir_uart_putc(Gold);
                     ClearBoard();
                     tinygl_clear();
@@ -206,7 +201,8 @@ int GTS_Game(void)
                     TCNT1 = 50;
                     break;
                 }
-                 if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
+
+                if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
                     ir_uart_putc(Gold);
                 }
             }
@@ -214,26 +210,23 @@ int GTS_Game(void)
             PORTC &= ~(1 <<2);
             ir_uart_putc(Gold);
 
-			if(receivedCharacter == 'S' && character != 'S') {
-				OtherGold += CheapInt(Gold);
-				Gold = '0';
-				
-			} else if(character == 'S' && receivedCharacter != 'S'){
-				Gold += CheapInt(OtherGold);
-				OtherGold = '0';
-				/*PORTC &= ~(1 <<2);*/
-			}
-	    /* This checks if the letter has been resived and if it is of the correct type.
-	    Also for later it checks if you both got the same thing */
-			isAnimating = 0;
-			
-		    while (isAnimating == 0){
-			isAnimating = DisplayGold(Gold);
-		    }
+            if (receivedCharacter == 'S' && character != 'S') {
+                OtherGold += CheapInt(Gold);
+                Gold = '0';
+            } else if (character == 'S' && receivedCharacter != 'S'){
+                Gold += CheapInt(OtherGold);
+                OtherGold = '0';
+            }
 
-	    break;
+            // This checks if the letter has been resived and if it is of the correct type.
+            // Also for later it checks if you both got the same thing */
+            isAnimating = 0;
 
+            while (!isAnimating){
+            isAnimating = DisplayGold(Gold);
+            }
 
+            break;
         }
 
         if ((Won == -1) || (Won == 3)) {

@@ -3,7 +3,7 @@
 # Group:         417
 # Authors:       Robert Condon, Vinnie Jamieson
 # Description:   Initilises settings for the different game stages
-# Last Modified: 15 OCT 2018
+# Last Modified: 17 OCT 2018
 ***********************************************************************/
 
 #include "LetterPicker.h"
@@ -21,7 +21,7 @@
 #define PACER_RATE 3000
 #define PACER_RATE_SCROLL 500
 #define MESSAGE_RATE 100
-#define MESSAGE_RATE_SCROLL 2
+#define MESSAGE_RATE_SCROLL 3
 #define PACER_RATE_MENU 500
 #define MESSAGE_RATE_MENU 3
 

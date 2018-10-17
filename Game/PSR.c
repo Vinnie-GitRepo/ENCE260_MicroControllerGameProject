@@ -3,7 +3,7 @@
 # Group:         417
 # Authors:       Robert Condon, Vinnie Jamieson
 # Description:   Module for our assignment's Paper Scissors Rock game
-# Last Modified: 15 OCT 2018
+# Last Modified: 17 OCT 2018
 ***********************************************************************/
 
 #include "system.h"
@@ -80,7 +80,6 @@ int PSR_Game(void)
             // setting up to go up characters and down to go down characters
             if (navswitch_push_event_p(NAVSWITCH_NORTH)) {
                 navswitch_val = (navswitch_val + 1) % 3;
-
             }
 
             if (navswitch_push_event_p(NAVSWITCH_SOUTH)) {
@@ -90,16 +89,16 @@ int PSR_Game(void)
                 }
             }
 
-            // This locsk in the letter picked and clears the board from all presets for the isAnimatings
+            // Sets the selected letter, clearing the board from all presets for the isAnimatings
             if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
                 ClearBoard();
                 tinygl_clear();
                 tinygl_update();
                 break;
             }
+
             // gets the character corrsponding to the value
             character = GetPSR(navswitch_val);
-
         }
 
         isAnimating = 0;
@@ -107,7 +106,6 @@ int PSR_Game(void)
         // waits for the letter from the other UCFK4 to be sent while also sending it's own letter
         TCNT1 = 0;
         while (1) {
-
             // Playing the cool isAnimating for the lock in
             while (!isAnimating) {
                 isAnimating = RollFill();
@@ -143,7 +141,7 @@ int PSR_Game(void)
 
         // This is all for setting up and checking who won
         // This then prints out either 'W' or 'L'
-        Won = WhoWon(character, receivedCharacter);
+        Won = DetermineWinner(character, receivedCharacter);
         if (Won == 1) {
             character = 'W';
             Wins += 1;
@@ -155,7 +153,6 @@ int PSR_Game(void)
         }
 
         // Resetting Timer
-
         TCNT1 = 0;
 
         // This loop just needs to be there for the messages to play there full way through

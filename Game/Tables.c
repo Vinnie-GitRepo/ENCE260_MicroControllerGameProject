@@ -3,7 +3,7 @@
 # Group:         417
 # Authors:       Robert Condon, Vinnie Jamieson
 # Description:   Handles the conditionals called throughout our games
-# Last Modified: 15 OCT 2018
+# Last Modified: 17 OCT 2018
 ***********************************************************************/
 
 #include "Tables.h"
@@ -11,7 +11,7 @@
 
 
 /*
- * Gets the Symbol for paper scisosrs or rock, from an int mod 3
+ * Gets the selection for the main menu, from an int mod 3
  */
 void GetMenu(int navswitch_val)
 {
@@ -37,7 +37,7 @@ void GetMenu(int navswitch_val)
 
 
 /*
- * Gets the Symbol for paper scisosrs or rock, from an int mod 3
+ * Gets the symbol for paper, scissors, or rock, from an int mod 3
  */
 char GetPSR(int navswitch_val)
 {
@@ -121,29 +121,29 @@ int CheapInt(char Gold) {
 
 
 /*
- * Selects from the different types of round endings
+ * Determines the round ending based on player-choices
  */
-int RoundEnd(char character, char received_char)
+int determineRoundOutcome(char character, char received_char)
 {
-    // Defults to if both players did Gold
+    // Defaults to 1 if both players did gold
     int won = 1;
     switch (character)
     {
-        // If you went gold and they stole it
+        // If you went gold and they steal, you lose the round
         case 'G':
             if (received_char == 'S') {
                 won = 0;
             }
             break;
 
-        // If you went Trap and they went steal, Therefore you just win
+        // If you went Trap and they went steal, you win immediately
         case 'T':
             if (received_char == 'S') {
                 won = 3;
             }
             break;
 
-        // If you went Steal and they went trap, Therefore you just lose
+        // If you went Steal and they went trap, you lose immediately
         case 'S':
             if (received_char == 'T') {
                 won = -1;
@@ -151,6 +151,7 @@ int RoundEnd(char character, char received_char)
             if (received_char == 'S') {
                 won = 2;
             }
+            break;
     }
 
     return won;
@@ -161,7 +162,7 @@ int RoundEnd(char character, char received_char)
 /*
  * Gets who won out of two results then returns 1 for won 0 for not won
  */
-int WhoWon(char character, char received_char)
+int DetermineWinner(char character, char received_char)
 {
     int won = 0;
     switch (character)

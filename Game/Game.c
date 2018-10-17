@@ -3,7 +3,7 @@
 # Group:         417
 # Authors:       Robert Condon, Vinnie Jamieson
 # Description:   The main game file for this assignment
-# Last Modified: 15 OCT 2018
+# Last Modified: 17 OCT 2018
 ***********************************************************************/
 
 #include "system.h"
@@ -35,7 +35,7 @@ int main(void)
     navswitch_init();
 
     int game_running = 0;
-	int Is_animating = 0;
+    int Is_animating = 0;
     int navswitch_val = 0;
     tinygl_text(" PAPER SCISSORS ROCK");
 
@@ -69,10 +69,10 @@ int main(void)
                 break;
             }
         }
-		while(!Is_animating) {
-		Is_animating = DisplayInfo();
-		}
-	
+        while(!Is_animating) {
+        Is_animating = DisplayInfo();
+        }
+
         while (navswitch_val == 0 && game_running == 0) {
             game_running = PSR_Game();
         }

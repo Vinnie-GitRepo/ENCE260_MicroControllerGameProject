@@ -1,9 +1,10 @@
-/*
-# File:   Tables.h
-# Author: Group417
-# Date:   10 OCT 2018
-# Descr:  Switch cases for the game.
-*/
+/***********************************************************************
+# File:          Tables.c
+# Group:         417
+# Authors:       Robert Condon, Vinnie Jamieson
+# Description:   Handles the conditionals called throughout our games
+# Last Modified: 17 OCT 2018
+***********************************************************************/
 
 #ifndef TABLES_H
 #define TABLES_H
@@ -18,10 +19,10 @@ char GetGTS(int NavSwitch_Val);
 char GetPSR(int NavSwitch_Val);
 
 /** Get end of round stats */
-int RoundEnd(char character, char Received_Char);
+int determineRoundOutcome(char character, char Received_Char);
 
 /** Get who won */
-int WhoWon(char character, char Received_Char);
+int determineWinner(char character, char Received_Char);
 
 int CheapInt(char Gold);
 
