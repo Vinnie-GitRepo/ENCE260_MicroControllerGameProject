@@ -1,7 +1,7 @@
 /***********************************************************************
 # File:          LetterPicker.c
 # Group:         417
-# Authors:       Robert Condon, Vinnie Jamieson
+# Authors:       Robert Condon (rtc33), Vinnie Jamieson (vjj14)
 # Description:   Module for our assignment's text processing
 # Last Modified: 17 OCT 2018
 ***********************************************************************/
@@ -18,6 +18,7 @@
 #include "Animations.h"
 #include "Starter.h"
 #include "PSR.h"
+
 
 /*
  * Displays the scores of wins and loses until navsiwtch is pushed

@@ -1,7 +1,7 @@
 /***********************************************************************
 # File:          PSR.c
 # Group:         417
-# Authors:       Robert Condon, Vinnie Jamieson
+# Authors:       Robert Condon (rtc33), Vinnie Jamieson (vjj14)
 # Description:   Module for our assignment's Paper Scissors Rock game
 # Last Modified: 17 OCT 2018
 ***********************************************************************/
@@ -104,13 +104,13 @@ int PSR_Game(void)
         isAnimating = 0;
         receivedCharacter = '0';
         // waits for the letter from the other UCFK4 to be sent while also sending it's own letter
-        
+
         while (1) {
             // Playing the cool isAnimating for the lock in
             while (!isAnimating) {
                 isAnimating = RollFill();
-		receivedCharacter = '0';
-		TCNT1 = 0;
+        receivedCharacter = '0';
+        TCNT1 = 0;
             }
 
             // The real start to the previous while loop

@@ -1,7 +1,7 @@
 /***********************************************************************
 # File:          GTS.c
 # Group:         417
-# Authors:       Robert Condon, Vinnie Jamieson
+# Authors:       Robert Condon (rtc33), Vinnie Jamieson (vjj14)
 # Description:   Module for our assignment's Gold Trap Steal game
 # Last Modified: 17 OCT 2018
 ***********************************************************************/
@@ -21,8 +21,6 @@
 
 #define PACER_RATE 3000
 #define MESSAGE_RATE 200
-
-
 
 
 /*
@@ -221,7 +219,7 @@ int GTS_Game(void)
             // This checks if the letter has been resived and if it is of the correct type.
             // Also for later it checks if you both got the same thing */
             isAnimating = 0;
-			navswitch_update();
+            navswitch_update();
             while (!isAnimating){
             isAnimating = DisplayGold(Gold);
             }

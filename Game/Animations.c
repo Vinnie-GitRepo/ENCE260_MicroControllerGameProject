@@ -1,7 +1,7 @@
 /***********************************************************************
 # File:          Animations.c
 # Group:         417
-# Authors:       Robert Condon, Vinnie Jamieson
+# Authors:       Robert Condon (rtc33), Vinnie Jamieson (vjj14)
 # Description:   Module for LED game animations on the fun kit
 # Last Modified: 17 OCT 2018
 ***********************************************************************/

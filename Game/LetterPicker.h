@@ -1,12 +1,14 @@
-/*
-# File:   Animations.h
-# Author: Group417
-# Date:   10 OCT 2018
-# Descr:  Animations on the LED board
-*/
+/***********************************************************************
+# File:          LetterPicker.h
+# Group:         417
+# Authors:       Robert Condon (rtc33), Vinnie Jamieson (vjj14)
+# Description:   Module for our assignment's text processing
+# Last Modified: 17 OCT 2018
+***********************************************************************/
 
 #ifndef LETTERPICKER_H
 #define LETTERPICKER_H
+
 
 /** Displays the scores*/
 int DisplayScores(char Wins, char Loses);

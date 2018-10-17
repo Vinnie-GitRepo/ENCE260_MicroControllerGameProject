@@ -1,13 +1,14 @@
 /***********************************************************************
-# File:          Tables.c
+# File:          Tables.h
 # Group:         417
 # Authors:       Robert Condon, Vinnie Jamieson
-# Description:   Handles the conditionals called throughout our games
+# Description:   Module handling the conditionals called in our games
 # Last Modified: 17 OCT 2018
 ***********************************************************************/
 
 #ifndef TABLES_H
 #define TABLES_H
+
 
 /** GET Menu from NavSwitch_Val  */
 void GetMenu(int NavSwitch_Val);

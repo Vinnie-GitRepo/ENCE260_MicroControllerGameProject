@@ -1,7 +1,7 @@
 /***********************************************************************
 # File:          Game.c
 # Group:         417
-# Authors:       Robert Condon, Vinnie Jamieson
+# Authors:       Robert Condon (rtc33), Vinnie Jamieson (vjj14)
 # Description:   The main game file for this assignment
 # Last Modified: 17 OCT 2018
 ***********************************************************************/
@@ -95,5 +95,4 @@ int main(void)
             }
         }
     }
-
 }

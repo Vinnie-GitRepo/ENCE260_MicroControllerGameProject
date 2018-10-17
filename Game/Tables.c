@@ -1,8 +1,8 @@
 /***********************************************************************
 # File:          Tables.c
 # Group:         417
-# Authors:       Robert Condon, Vinnie Jamieson
-# Description:   Handles the conditionals called throughout our games
+# Authors:       Robert Condon (rtc33), Vinnie Jamieson (vjj14)
+# Description:   Module handling the conditionals called in our games
 # Last Modified: 17 OCT 2018
 ***********************************************************************/
 

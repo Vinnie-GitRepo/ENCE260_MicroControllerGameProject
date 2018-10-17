@@ -1,8 +1,8 @@
 /***********************************************************************
 # File:          Starter.c
 # Group:         417
-# Authors:       Robert Condon, Vinnie Jamieson
-# Description:   Initilises settings for the different game stages
+# Authors:       Robert Condon (rtc33), Vinnie Jamieson (vjj14)
+# Description:   Module initialising setting for different game stages
 # Last Modified: 17 OCT 2018
 ***********************************************************************/
 
