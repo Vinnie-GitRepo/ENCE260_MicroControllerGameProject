@@ -82,7 +82,7 @@ int main(void)
         }
 
         if (navswitch_val == 2) {
-            tinygl_text(" WORK IN PROGRESS");
+            tinygl_text("WORK IN PROGRESS FOR QUITING");
 
             while (1) {
                 navswitch_update();

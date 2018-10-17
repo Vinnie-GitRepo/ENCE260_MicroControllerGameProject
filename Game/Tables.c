@@ -23,7 +23,7 @@ void GetMenu(int navswitch_val)
                 break;
 
             case 1:
-                menu = " GOLD THIEF STEAL";
+                menu = " GOLD TRAP STEAL";
                 break;
 
             case 2:
