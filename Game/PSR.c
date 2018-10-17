@@ -104,11 +104,13 @@ int PSR_Game(void)
         isAnimating = 0;
         receivedCharacter = '0';
         // waits for the letter from the other UCFK4 to be sent while also sending it's own letter
-        TCNT1 = 0;
+        
         while (1) {
             // Playing the cool isAnimating for the lock in
             while (!isAnimating) {
                 isAnimating = RollFill();
+		receivedCharacter = '0';
+		TCNT1 = 0;
             }
 
             // The real start to the previous while loop
@@ -121,7 +123,7 @@ int PSR_Game(void)
 
             // This checks if the letter has been received and if it is of the correct type
             // Also for later it checks if you both got the same thing
-            if ((receivedCharacter == 'R' || receivedCharacter == 'S' || receivedCharacter == 'P') && TCNT1 > 5) {
+            if ((receivedCharacter == 'R' || receivedCharacter == 'S' || receivedCharacter == 'P') && TCNT1 > 200) {
                 ir_uart_putc(character);
                 ClearBoard();
                 tinygl_clear();

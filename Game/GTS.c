@@ -221,7 +221,7 @@ int GTS_Game(void)
             // This checks if the letter has been resived and if it is of the correct type.
             // Also for later it checks if you both got the same thing */
             isAnimating = 0;
-
+			navswitch_update();
             while (!isAnimating){
             isAnimating = DisplayGold(Gold);
             }

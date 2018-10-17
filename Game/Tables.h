@@ -22,7 +22,7 @@ char GetPSR(int NavSwitch_Val);
 int determineRoundOutcome(char character, char Received_Char);
 
 /** Get who won */
-int determineWinner(char character, char Received_Char);
+int DetermineWinner(char character, char Received_Char);
 
 int CheapInt(char Gold);
 
