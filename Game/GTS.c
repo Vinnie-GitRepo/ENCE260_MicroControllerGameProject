@@ -16,6 +16,7 @@
 #include "Tables.h"
 #include "Animations.h"
 #include "LetterPicker.h"
+#include "NavswitchSelections.h"
 #include "Starter.h"
 
 #define PACER_RATE 3000
@@ -53,8 +54,6 @@ int GTS_Game(void)
 
 
     navswitch_init();
-    int navswitch_val = 0;
-
     pacer_init(PACER_RATE);
 
 
@@ -66,49 +65,10 @@ int GTS_Game(void)
         // Sets the waiting time for anything tinygl related
         OneText_init();
 
-        navswitch_val = 0;
         character = 'G';
         Won = 5;
 
-
-
-
-
-
-
-        // Make this into a char function where it returns a character.
-
-        // Loop which continues until a choice has been made via the navswitch
-        while (1) {
-            // Wait times for updates
-            pacer_wait();
-            tinygl_update();
-            navswitch_update();
-            display_character(character);
-
-            // setting up to go up characters and down to go down characters
-            if (navswitch_push_event_p(NAVSWITCH_NORTH)) {
-                navswitch_val = (navswitch_val + 1) % 3;
-            }
-
-            if (navswitch_push_event_p(NAVSWITCH_SOUTH)) {
-                navswitch_val = (navswitch_val - 1) % 3;
-                if (navswitch_val == 0) {
-                    navswitch_val = 3;
-                }
-            }
-
-            // Sets the selected letter, clearing the board from all presets for the isAnimatings
-            if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
-                ClearBoard();
-                tinygl_clear();
-                tinygl_update();
-                break;
-            }
-
-            // Gets the character corresponding to the value
-            character = GetGTS(navswitch_val);
-        }
+        character = getSelectedChar();
 
         isAnimating = 0;
         receivedCharacter = '0';
@@ -178,9 +138,6 @@ int GTS_Game(void)
             OtherGold += 1;
         }
 
-        // Resetting Timer
-
-
 
 
 
@@ -205,6 +162,9 @@ int GTS_Game(void)
 
         // Can make this run with a bool that gets ended by the below break conditional (that will change)
         while (1) {
+
+
+
             while (!isAnimating) {
                 isAnimating = RollFillGTS();
                 if ((Won == -1) || (Won == 3)) {
@@ -260,9 +220,6 @@ int GTS_Game(void)
 
 
 
-
-
-
             PORTC &= ~(1 <<2);
             ir_uart_putc(Gold);
 
@@ -284,6 +241,10 @@ int GTS_Game(void)
 
             break;
         }
+
+
+
+
 
         if ((Won == -1) || (Won == 3)) {
             ClearBoard();

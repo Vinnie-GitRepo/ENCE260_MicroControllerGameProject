@@ -1,7 +1,9 @@
-# File:   Makefile
-# Author: Group417
-# Date:   10 OCT 2018
-# Descr:  Makefile for Game
+# File:           Makefile
+# Group:          417
+# Authors:        Robert Condon (rtc33), Vinnie Jamieson (vjj14)
+# Description:    Makefile for our game assignment
+# Last Modified:  18 OCT 2018
+
 
 # Definitions.
 CC = avr-gcc
@@ -62,27 +64,29 @@ Tables.o: Tables.c Tables.h ../../../utils/tinygl.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
 Animations.o: Animations.c Animations.h  ../../../drivers/avr/pio.h ../../../drivers/avr/system.h ../../../utils/tinygl.h
-	$(CC) -c $(CFLAGS) $< -o $@ 
+	$(CC) -c $(CFLAGS) $< -o $@
 
-LetterPicker.o: LetterPicker.c LetterPicker.h  ../../../drivers/avr/system.h ../../../drivers/display.h ../../../drivers/navswitch.h ../../../fonts/font5x7_1.h ../../../utils/font.h ../../../utils/pacer.h ../../../utils/tinygl.h ../../../drivers/avr/pio.h
+LetterPicker.o: LetterPicker.c LetterPicker.h ../../../drivers/avr/system.h ../../../drivers/display.h ../../../drivers/navswitch.h ../../../fonts/font5x7_1.h ../../../utils/font.h ../../../utils/pacer.h ../../../utils/tinygl.h ../../../drivers/avr/pio.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
 Starter.o: Starter.c Starter.h  ../../../drivers/avr/system.h ../../../drivers/display.h ../../../drivers/navswitch.h ../../../fonts/font5x7_1.h ../../../utils/font.h ../../../utils/pacer.h ../../../utils/tinygl.h ../../../drivers/avr/pio.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
+NavswitchSelections.o: NavswitchSelections.c NavswitchSelections.h ../../../drivers/avr/system.h ../../../drivers/navswitch.h ../../../utils/tinygl.h ../../../drivers/avr/ir_uart.h ../../../utils/pacer.h
+	$(CC) -c $(CFLAGS) $< -o $@
 
 GTS.o: GTS.c GTS.h ../../../drivers/avr/ir_uart.h ../../../drivers/avr/system.h ../../../drivers/display.h ../../../drivers/navswitch.h ../../../fonts/font5x7_1.h ../../../utils/font.h ../../../utils/pacer.h ../../../utils/tinygl.h ../../../drivers/avr/pio.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
 # Link: create ELF output file from object files.
-Game.out: Game.o ir_uart.o pio.o prescale.o system.o timer.o timer0.o usart1.o display.o ledmat.o navswitch.o font.o pacer.o tinygl.o Tables.o Animations.o LetterPicker.o Starter.o GTS.o
+Game.out: Game.o ir_uart.o pio.o prescale.o system.o timer.o timer0.o usart1.o display.o ledmat.o navswitch.o font.o pacer.o tinygl.o Tables.o Animations.o LetterPicker.o Starter.o GTS.o NavswitchSelections.o
 	$(CC) $(CFLAGS) $^ -o $@ -lm
 	$(SIZE) $@
 
 
 # Target: clean project.
 .PHONY: clean
-clean: 
+clean:
 	-$(DEL) *.o *.out *.hex
 
 
@@ -91,5 +95,3 @@ clean:
 program: Game.out
 	$(OBJCOPY) -O ihex Game.out Game.hex
 	dfu-programmer atmega32u2 erase; dfu-programmer atmega32u2 flash Game.hex; dfu-programmer atmega32u2 start
-
-
