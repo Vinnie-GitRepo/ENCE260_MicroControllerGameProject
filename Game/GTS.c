@@ -77,7 +77,7 @@ int GTS_Game(void)
 
 
 
-
+        // Make this into a char function where it returns a character.
 
         // Loop which continues until a choice has been made via the navswitch
         while (1) {
@@ -127,7 +127,7 @@ int GTS_Game(void)
 
 
 
-
+        // Return received character after the loop breaks
 
         // Waits for the letter from the other UCFK4 to be sent while also sending its own letter
         TCNT1 = 0;
@@ -169,6 +169,9 @@ int GTS_Game(void)
         tinygl_update();
         RollDel();
         Won = determineRoundOutcome(character, receivedCharacter);
+        // if(Won == 3 || Won == -1) {
+        //      ENDME = 1;
+        // }
         if(character == 'G') {
             Gold += 1;
         }
@@ -201,6 +204,7 @@ int GTS_Game(void)
         // This loop just needs to be there for the messages to play there full way through
         isAnimating = 0;
 
+        // Can make this run with a bool that gets ended by the below break conditional (that will change)
         while (1) {
             while (!isAnimating) {
                 isAnimating = RollFillGTS();
@@ -213,11 +217,19 @@ int GTS_Game(void)
                 TCNT1 = 0;
             }
 
+
+            //Checks if you lost via trapsteal, ends game
+            // Can make this return a loop ending bool
             if ((Won == -1) || (Won == 3)) {
                 ClearBoard();
                 tinygl_clear();
                 break;
             }
+
+
+
+
+            // COULD BREAK THIS INTO A FUNCTION RETURNING OTHERGOLD
 
             // The real start to the previous while loop
             tinygl_update();
