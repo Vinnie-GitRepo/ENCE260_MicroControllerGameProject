@@ -17,7 +17,6 @@
 #include "Animations.h"
 #include "LetterPicker.h"
 #include "Starter.h"
-#include "PSR.h"
 
 #define PACER_RATE 3000
 #define MESSAGE_RATE 200
