@@ -21,32 +21,6 @@
 
 
 /*
- * Displays the scores of wins and loses until navsiwtch is pushed
- */
-int DisplayScores(char Wins, char Loses)
-{
-
-    system_init();
-    ScrollText_init();
-
-    char s[] = {' ','W', Wins,' ','L', Loses};
-
-    tinygl_text(s);
-    TCNT1 = 0;
-    while (1) {
-        tinygl_update();
-        navswitch_update();
-
-        if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
-            break;
-        }
-    }
-    return 1;
-}
-
-
-
-/*
  * Displays insturctions
  */
 int DisplayInfo(void)
@@ -103,9 +77,9 @@ int DisplayGold(char Gold)
 
     TCNT1 = 0;
     while (1) {
-        if(TCNT1 < 10000) {
+        if (TCNT1 < 10000) {
             display_character('G');
-        }else if(TCNT1 > 10000 && TCNT1 < 30000) {
+        } else if (TCNT1 > 10000 && TCNT1 < 30000) {
             display_character(Gold);
         } else {
             TCNT1 = 0;
@@ -113,38 +87,6 @@ int DisplayGold(char Gold)
         tinygl_update();
         navswitch_update();
 
-        if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
-            break;
-        }
-    }
-
-    return 1;
-}
-
-
-
-/*
- * Displays the scores 'YOU WON' or 'YOU LOST' until navsiwtch is pushed
- */
-int DisplayWinner(char Wins)
-{
-
-    system_init();
-    ScrollText_init();
-    char* s;
-
-    if (Wins == '3') {
-        s = "YOU WON!";
-    } else {
-        s = "YOU LOST </3";
-    }
-
-    tinygl_text(s);
-    TCNT1 = 0;
-
-    while (1) {
-        tinygl_update();
-        navswitch_update();
         if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
             break;
         }

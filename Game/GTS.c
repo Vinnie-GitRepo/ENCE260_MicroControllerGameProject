@@ -57,6 +57,9 @@ int GTS_Game(void)
     int navswitch_val = 0;
 
     pacer_init(PACER_RATE);
+
+
+    //
     while ((Won != -1) && (Won != 3) && (Gold < '5') && (OtherGold < '5')) {
         // System initialised
         system_init();
@@ -67,6 +70,14 @@ int GTS_Game(void)
         navswitch_val = 0;
         character = 'G';
         Won = 5;
+
+
+
+
+
+
+
+
 
         // Loop which continues until a choice has been made via the navswitch
         while (1) {
@@ -79,10 +90,9 @@ int GTS_Game(void)
             // setting up to go up characters and down to go down characters
             if (navswitch_push_event_p(NAVSWITCH_NORTH)) {
                 navswitch_val = (navswitch_val + 1) % 3;
-
             }
 
-            if (navswitch_push_event_p (NAVSWITCH_SOUTH)) {
+            if (navswitch_push_event_p(NAVSWITCH_SOUTH)) {
                 navswitch_val = (navswitch_val - 1) % 3;
                 if (navswitch_val == 0) {
                     navswitch_val = 3;
@@ -103,6 +113,21 @@ int GTS_Game(void)
 
         isAnimating = 0;
         receivedCharacter = '0';
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // Waits for the letter from the other UCFK4 to be sent while also sending its own letter
         TCNT1 = 0;
@@ -130,14 +155,10 @@ int GTS_Game(void)
                 break;
             }
 
-
             navswitch_update();
 
             if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
                 ir_uart_putc(character);
-
-                /* Testing
-                break;*/
             }
         }
 
@@ -156,6 +177,26 @@ int GTS_Game(void)
         }
 
         // Resetting Timer
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         // This loop just needs to be there for the messages to play there full way through
         isAnimating = 0;
@@ -205,6 +246,12 @@ int GTS_Game(void)
                 }
             }
 
+
+
+
+
+
+
             PORTC &= ~(1 <<2);
             ir_uart_putc(Gold);
 
@@ -221,7 +268,7 @@ int GTS_Game(void)
             isAnimating = 0;
             navswitch_update();
             while (!isAnimating){
-            isAnimating = DisplayGold(Gold);
+                isAnimating = DisplayGold(Gold);
             }
 
             break;
@@ -237,9 +284,12 @@ int GTS_Game(void)
 
     }
 
+
+
+
     isAnimating = 0;
     while(!isAnimating) {
-            isAnimating = DisplayWinnerGTS(Won, Gold, OtherGold);
+        isAnimating = DisplayWinnerGTS(Won, Gold, OtherGold);
     }
     return 1;
 }

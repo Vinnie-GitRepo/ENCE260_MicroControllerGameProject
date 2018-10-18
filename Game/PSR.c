@@ -109,8 +109,8 @@ int PSR_Game(void)
             // Playing the cool isAnimating for the lock in
             while (!isAnimating) {
                 isAnimating = RollFill();
-        receivedCharacter = '0';
-        TCNT1 = 0;
+                receivedCharacter = '0';
+                TCNT1 = 0;
             }
 
             // The real start to the previous while loop

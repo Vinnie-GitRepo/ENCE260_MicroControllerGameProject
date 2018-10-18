@@ -37,31 +37,6 @@ void GetMenu(int navswitch_val)
 
 
 /*
- * Gets the symbol for paper, scissors, or rock, from an int mod 3
- */
-char GetPSR(int navswitch_val)
-{
-    char character = 'R';
-    switch (navswitch_val)
-    {
-        case 0:
-            character = 'R';
-            break;
-
-        case 1:
-            character = 'S';
-            break;
-
-        case 2:
-            character = 'P';
-            break;
-    }
-    return character;
-}
-
-
-
-/*
  * Get gold steal trap from int
  */
 char GetGTS(int navswitch_val)
@@ -159,41 +134,4 @@ int determineRoundOutcome(char character, char received_char)
 
 
 
-/*
- * Gets who won out of two results then returns 1 for won 0 for not won
- */
-int DetermineWinner(char character, char received_char)
-{
-    int won = 0;
-    switch (character)
-    {
-        case 'R':
-            if (received_char == 'S') {
-                won = 1;
-            }
-            if (received_char == 'R') {
-                won = 2;
-            }
-            break;
 
-        case 'S':
-            if (received_char == 'P') {
-                won = 1;
-            }
-            if (received_char == 'S') {
-                won = 2;
-            }
-            break;
-
-        case 'P':
-            if (received_char == 'R') {
-                won = 1;
-            }
-            if (received_char == 'P') {
-                won = 2;
-            }
-            break;
-    }
-
-    return won;
-}
