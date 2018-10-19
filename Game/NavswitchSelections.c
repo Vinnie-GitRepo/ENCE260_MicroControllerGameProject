@@ -31,19 +31,20 @@ char getSelectedChar(void)
         display_character(returnChar);
 
 
-        // setting up to go up characters and down to go down characters
+        // Navswitch option selections, in order G, S, T, G, ...
         if (navswitch_push_event_p(NAVSWITCH_NORTH)) {
             navswitchVal = (navswitchVal + 1) % 3;
         }
 
+        // Navswitch option selections, in order G, T, S, G, ...
         if (navswitch_push_event_p(NAVSWITCH_SOUTH)) {
             navswitchVal = (navswitchVal - 1) % 3;
-            if (navswitchVal == 0) {
-                navswitchVal = 3;
+            if (navswitchVal == -1) {
+                navswitchVal = 2;
             }
         }
 
-        // Sets the selected letter, clearing the board from all presets for the isAnimatings
+        // Sets the selected letter, clearing the board
         if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
             ClearBoard();
             tinygl_clear();
@@ -55,5 +56,4 @@ char getSelectedChar(void)
     }
 
     return returnChar;
-
 }
