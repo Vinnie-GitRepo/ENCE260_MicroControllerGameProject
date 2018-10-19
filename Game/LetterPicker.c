@@ -20,7 +20,7 @@
 /*
  * Displays insturctions
  */
-int DisplayInfo(void)
+int displayInfo(void)
 {
     system_init();
     MenuText_init();
@@ -36,7 +36,7 @@ int DisplayInfo(void)
             TCNT1 = 0;
         }
         if(Loop >= 6) {
-            FillBoard();
+            fillBoard();
             if(Loop == 6) {
                 tinygl_text(Free_Space);
                 Loop += 1;
@@ -49,7 +49,7 @@ int DisplayInfo(void)
             break;
         }
     }
-    ClearBoard();
+    clearBoard();
     return 1;
 }
 
@@ -58,7 +58,7 @@ int DisplayInfo(void)
 /*
  * Displays the Gold total until navsiwtch is pushed
  */
-int DisplayGold(char Gold)
+int displayGold(char gold)
 {
     system_init();
     OneText_init();
@@ -66,9 +66,9 @@ int DisplayGold(char Gold)
     TCNT1 = 0;
     while (1) {
         if (TCNT1 < 10000) {
-            display_character('G');
+            displayCharacter('G');
         } else if (TCNT1 > 10000 && TCNT1 < 30000) {
-            display_character(Gold);
+            displayCharacter(gold);
         } else {
             TCNT1 = 0;
         }
@@ -88,20 +88,20 @@ int DisplayGold(char Gold)
 /*
  * Displays winners of GTS and the type of victory/loss it was
  */
-int DisplayWinnerGTS(char Wins, char Gold, char OtherGold)
+int displayWinner(char wins, char playerGold, char opponentGold)
 {
     system_init();
 
     char* s;
     ScrollText_init();
     s = "inviald End Game";
-    if (Wins == 3) {
+    if (wins == 3) {
         s = "YOU TRAPPED THEM YOU WIN";
-    } else if (Wins == -1){
+    } else if (wins == -1){
         s = "YOU GOT TRAPPED YOU LOSE";
-    } else if (Gold >= '5') {
+    } else if (playerGold >= '5') {
         s = "YOU GOT 5 GOLD YOU WIN";
-    } else if (OtherGold >= '5'){
+    } else if (opponentGold >= '5'){
         s = "THEY GOT 5 GOLD YOU LOSE";
     }
 

@@ -10,17 +10,13 @@
 #define TABLES_H
 
 
-/** GET Menu from NavSwitch_Val  */
-void GetMenu(int NavSwitch_Val);
-
 /** Get GTS from NavSwitch_Val */
-char GetGTS(int NavSwitch_Val);
-
+char getGTS(int navswitchVal);
 
 /** Get end of round stats */
-int determineRoundOutcome(char character, char Received_Char);
+int determineRoundOutcome(char character, char receivedChar);
 
-
-int CheapInt(char Gold);
+/** Converts the char representing a gold value to an int for calculations*/
+int charToInt(char gold);
 
 #endif

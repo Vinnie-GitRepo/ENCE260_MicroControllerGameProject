@@ -18,7 +18,7 @@
 /*
  * Configures the board to high for easier manipulation
  */
-void ConfigBoard(void)
+void configBoard(void)
 {
     pio_config_set(LEDMAT_ROW1_PIO, PIO_OUTPUT_HIGH);
     pio_config_set(LEDMAT_ROW2_PIO, PIO_OUTPUT_HIGH);
@@ -39,9 +39,9 @@ void ConfigBoard(void)
 /*
  * Clears the board of any on LEDs.
  */
-void ClearBoard(void)
+void clearBoard(void)
 {
-    ConfigBoard();
+    configBoard();
 
     pio_output_high(LEDMAT_ROW1_PIO);
     pio_output_high(LEDMAT_ROW2_PIO);
@@ -62,9 +62,9 @@ void ClearBoard(void)
 
 /*
  * Makes sure the right character is displayed through a buffer.
- * Also puts the null byte of '\0'to show the end of a display_character
+ * Also puts the null byte of '\0'to show the end of a displayCharacter
  */
-void display_character(char character)
+void displayCharacter(char character)
 {
     char buffer[2];
     buffer[0] = character;
@@ -77,9 +77,9 @@ void display_character(char character)
 /*
  * Turns all LEDs on the board on.
  */
-void FillBoard(void)
+void fillBoard(void)
 {
-    ConfigBoard();
+    configBoard();
 
     pio_output_low(LEDMAT_ROW1_PIO);
     pio_output_low(LEDMAT_ROW2_PIO);
@@ -101,7 +101,7 @@ void FillBoard(void)
  * Plays an aniamtion of LED's that fill the board slowly from the
  * top left to bottom right. However, this time is does it faster.
  */
-int RollFillGTS(void)
+int rollFill(void)
 {
     tinygl_init(PACER_RATE);
     tinygl_clear();
@@ -137,7 +137,7 @@ int RollFillGTS(void)
 /*
  * Ensures that all LEDs are where they were previously.
  */
-int RollDel(void)
+int rollDel(void)
 {
     tinygl_init(PACER_RATE);
     tinygl_clear();

@@ -49,12 +49,12 @@ int main(void)
             }
         }
         while(!isAnimating) {
-        isAnimating = DisplayInfo();
+        isAnimating = displayInfo();
         }
 
 
         while (!gameRunning) {
-            gameRunning = GTS_Game();
+            gameRunning = gameGTS();
         }
 
     }

@@ -28,8 +28,7 @@ char getSelectedChar(void)
         pacer_wait();
         tinygl_update();
         navswitch_update();
-        display_character(returnChar);
-
+        displayCharacter(returnChar);
 
         // Navswitch option selections, in order G, S, T, G, ...
         if (navswitch_push_event_p(NAVSWITCH_NORTH)) {
@@ -46,13 +45,13 @@ char getSelectedChar(void)
 
         // Sets the selected letter upon pressing, clearing the board
         if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
-            ClearBoard();
+            clearBoard();
             tinygl_clear();
             tinygl_update();
             break;
         }
 
-        returnChar = GetGTS(navswitchVal);
+        returnChar = getGTS(navswitchVal);
     }
 
     return returnChar;

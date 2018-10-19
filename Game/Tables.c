@@ -15,40 +15,13 @@
 #define NOTHING_HAPPENED 1
 
 
-
-/*
- * Gets the selection for the main menu, from an int mod 3
- */
-void GetMenu(int navswitch_val)
-{
-    char* menu = " PAPER SCISSORS ROCK";
-    switch (navswitch_val)
-        {
-            case 0:
-                menu = " PAPER SCISSORS ROCK";
-                break;
-
-            case 1:
-                menu = " GOLD TRAP STEAL";
-                break;
-
-            case 2:
-                menu = " QUIT";
-                break;
-        }
-
-    tinygl_text(menu);
-}
-
-
-
 /*
  * Get gold steal trap from int
  */
-char GetGTS(int navswitch_val)
+char getGTS(int navswitchVal)
 {
     char character = 'G';
-    switch (navswitch_val)
+    switch (navswitchVal)
     {
         case 0:
             character = 'G';
@@ -71,9 +44,9 @@ char GetGTS(int navswitch_val)
 /*
  * Converts the char representing a gold value to an int for calculations
  */
-int CheapInt(char Gold) {
+int charToInt(char gold) {
     int gold_int = 0;
-    switch (Gold)
+    switch (gold)
     {
         case '0':
             gold_int = 0;
@@ -104,7 +77,7 @@ int CheapInt(char Gold) {
 /*
  * Determines the round ending based on player-choices
  */
-int determineRoundOutcome(char character, char received_char)
+int determineRoundOutcome(char character, char receivedChar)
 {
     // Defaults to 1 if both players did gold
     int outCome = NOTHING_HAPPENED;
@@ -112,21 +85,21 @@ int determineRoundOutcome(char character, char received_char)
     {
         // If you went gold and they steal, you lose the round
         case 'G':
-            if (received_char == 'S') {
+            if (receivedChar == 'S') {
                 outCome = STOLEN_GOLD;
             }
             break;
 
         // If you went Trap and they went steal, you win immediately
         case 'T':
-            if (received_char == 'S') {
+            if (receivedChar == 'S') {
                 outCome = OPPONENT_TRAPPED;
             }
             break;
 
         // If you went Steal and they went trap, you lose immediately
         case 'S':
-            if (received_char == 'T') {
+            if (receivedChar == 'T') {
                 outCome = PLAYER_TRAPPED;
             }
             break;

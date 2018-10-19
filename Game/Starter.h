@@ -13,7 +13,7 @@
 /** initialize the tinygl for the scrolling menu text */
 void MenuText_init(void);
 
-/** initialize the tinygl for static characters*/
+/** initialize the tinygl for static characters */
 void OneText_init(void);
 
 /** initialize the tinygl for the scrolling text */

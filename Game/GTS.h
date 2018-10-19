@@ -10,7 +10,7 @@
 #define GTS_H
 
 
-/** This is the gold theif steal game*/
-int GTS_Game(void);
+/** This is the gold theif steal game */
+int gameGTS(void);
 
 #endif

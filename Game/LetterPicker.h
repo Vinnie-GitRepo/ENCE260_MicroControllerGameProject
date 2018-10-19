@@ -12,13 +12,13 @@
 
 
 /** Displays how to play the games */
-int DisplayInfo(void);
+int displayInfo(void);
 
 /** Shows the gold you have */
-int DisplayGold(char Gold);
+int displayGold(char playerGold);
 
 
 /** Displays winners of GTS and the type of victory/loss it was */
-int DisplayWinnerGTS(char Wins, char Gold, char OtherGold);
+int displayWinner(char wins, char playerGold, char opponentGold);
 
 #endif

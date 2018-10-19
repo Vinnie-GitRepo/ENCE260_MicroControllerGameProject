@@ -30,7 +30,7 @@
 * Returns the other Funkit's playerGold.
 * Takes in the player's playerGold.
 */
-char GetGold(char playerGold, char opponentGold)
+char getGold(char playerGold, char opponentGold)
 {
     while (1) {
         navswitch_update();
@@ -42,10 +42,10 @@ char GetGold(char playerGold, char opponentGold)
 
         if ((opponentGold >= '0' && opponentGold < '6') && TCNT1 > WAIT_TIME) {
             ir_uart_putc(playerGold);
-            ClearBoard();
+            clearBoard();
             tinygl_clear();
             tinygl_update();
-            RollDel();
+            rollDel();
             TCNT1 = 50;
             break;
         }
@@ -65,12 +65,12 @@ char GetGold(char playerGold, char opponentGold)
 * Returns the other Funkit's character.
 * Takes in the player's character.
 */
-char GetChar(char character, char receivedCharacter, int isAnimating)
+char getChar(char character, char receivedCharacter, int isAnimating)
 {
     while (1) {
         // Playing the cool isAnimating for the lock in
         while (!isAnimating) {
-            isAnimating = RollFillGTS();
+            isAnimating = rollFill();
         }
 
         // The real start to the previous while loop
@@ -84,10 +84,10 @@ char GetChar(char character, char receivedCharacter, int isAnimating)
         // Also for later it checks if you both got the same thing
         if ((receivedCharacter == 'G' || receivedCharacter == 'T' || receivedCharacter == 'S') && TCNT1 > WAIT_TIME)  {
             ir_uart_putc(character);
-            ClearBoard();
+            clearBoard();
             tinygl_clear();
             tinygl_update();
-            RollDel();
+            rollDel();
             break;
         }
 
@@ -106,7 +106,7 @@ char GetChar(char character, char receivedCharacter, int isAnimating)
 /*
  * What runs the game
  */
-int GTS_Game(void)
+int gameGTS(void)
 {
     char playerGold = '0';
     char opponentGold = '0';
@@ -153,15 +153,15 @@ int GTS_Game(void)
         // Return received character after the loop breaks
 
         // Waits for the letter from the other UCFK4 to be sent while also sending its own letter
-        receivedCharacter = GetChar(character, receivedCharacter, isAnimating);
+        receivedCharacter = getChar(character, receivedCharacter, isAnimating);
 
 
         // This is all for setting up and checking who outCome
         // printing out either 'W' or 'L'
-        ClearBoard();
+        clearBoard();
         tinygl_clear();
         tinygl_update();
-        RollDel();
+        rollDel();
         outCome = determineRoundOutcome(character, receivedCharacter);
 
         // If you got trapped or trapped the other player the game ends here.
@@ -183,20 +183,20 @@ int GTS_Game(void)
         // Can make this run with a bool that gets ended by the below break conditional (that will change)
         while (1) {
             while (!isAnimating) {
-                isAnimating = RollFillGTS();
+                isAnimating = rollFill();
                 TCNT1 = 0;
             }
 
             // The real start to the previous while loop
             tinygl_update();
             opponentGold = ' ';
-            opponentGold = GetGold(playerGold, opponentGold);
+            opponentGold = getGold(playerGold, opponentGold);
 
             if (receivedCharacter == 'S' && character != 'S') {
-                opponentGold += CheapInt(playerGold);
+                opponentGold += charToInt(playerGold);
                 playerGold = '0';
             } else if (character == 'S' && receivedCharacter != 'S'){
-                playerGold += CheapInt(opponentGold);
+                playerGold += charToInt(opponentGold);
                 opponentGold = '0';
             }
 
@@ -205,18 +205,18 @@ int GTS_Game(void)
             isAnimating = 0;
             navswitch_update();
             while (!isAnimating){
-                isAnimating = DisplayGold(playerGold);
+                isAnimating = displayGold(playerGold);
             }
 
             break;
         }
 
-        ClearBoard();
+        clearBoard();
     }
 
     isAnimating = 0;
     while(!isAnimating) {
-        isAnimating = DisplayWinnerGTS(outCome, playerGold, opponentGold);
+        isAnimating = displayWinner(outCome, playerGold, opponentGold);
     }
 
     return 1;

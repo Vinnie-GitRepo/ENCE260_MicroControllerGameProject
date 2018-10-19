@@ -11,21 +11,21 @@
 
 
 /** Clears the board form PIO inputs */
-void ClearBoard (void);
+void clearBoard (void);
 
 /** Fills the board with on LED's */
-void FillBoard (void);
+void fillBoard (void);
 
 /** Fills the board with  LEDS in a nice way */
 int RollFill (void);
 
 /** Fills the board with  LEDS in a nice way but fast */
-int RollFillGTS(void);
+int rollFill(void);
 
 /** Fixes the board with  LEDS in a nice way */
-int RollDel (void);
+int rollDel(void);
 
-/** Displays character aee */
-void display_character (char character);
+/** Displays character */
+void displayCharacter(char character);
 
 #endif
