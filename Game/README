@@ -12,30 +12,10 @@ While holding the previous button, press the other white button.
 Repeat until a LED on the 7x5 grid.
 
 Menu Controls:
-You start off in the menu. To move through the menu you use the joy stick. Press up (Led portrait on the funkit).
-This cycles through the games; paper scissors rock, gold trap steal and quit.
-To select to one of these three just press down on the joy stick while the text is displaying whitch option you want.
+You start off by seeing "Gold Trap Steal". Once you're ready for the game just press down on the joy stick. 
+Same thing goes for your partner who you'll be playing against.
 A prompt should pop up telling you to press down on the joy stick again, and where you will need to in the future.
 
-paper scissors rock:
-The rules of this game follows:
-You win when you beat the other pick.
-Paper beats rock.
-Rock beats scissors.
-Scissors beats paper.
-How to play:
-It starts with you being able to cycle through 3 characters; R, S and P.
-R = Rock
-S = Scissors
-P = Paper
-To lock this in press on the joy stick while it's displaying the choice you want to pick.
-Then an animation of LED's should go off. Once this is done, all LED's should be on.
-If both boards have all LED's on then place them both togther so the inferread reader (U1) is facing the other board.
-Then move the funkits so the inferread reader is facing the opposing golden resever. Do this for both.
-Then one funkit may press the joy stick to continue through the game.
-This should display if you won, then how many you've won or lost.
-Press down on the joy stick to play again.
-repeat until one of the funkits has won three times.
 
 Gold Steal trap:
 The rules of this game follows:
