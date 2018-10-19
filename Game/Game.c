@@ -9,7 +9,6 @@
 #include "system.h"
 #include "navswitch.h"
 #include "tinygl.h"
-#include "../fonts/font5x7_2.h"
 #include "Tables.h"
 #include "Animations.h"
 #include "LetterPicker.h"
