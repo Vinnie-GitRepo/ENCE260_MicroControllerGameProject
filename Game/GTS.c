@@ -24,6 +24,83 @@
 #define PLAYER_TRAPPED -1
 #define WAIT_TIME 50
 
+/* 
+* Receives gold from the other funkit. Makes sure it passes checks then sends back it's own gold.
+* Returns the other Funkit's gold.
+* Takes in the player's gold.
+*/
+
+char GetGold(char Gold, char OtherGold)
+{
+	while (1) {
+		navswitch_update();
+		tinygl_update();
+
+		if (ir_uart_read_ready_p()) {
+		    OtherGold = ir_uart_getc();
+		}
+
+		if ((OtherGold >= '0' && OtherGold < '6') && TCNT1 > WAIT_TIME) {
+		    ir_uart_putc(Gold);
+		    ClearBoard();
+		    tinygl_clear();
+		    tinygl_update();
+		    RollDel();
+		    TCNT1 = 50;
+		    break;
+		}
+
+		if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
+		    ir_uart_putc(Gold);
+		}
+	}
+	return OtherGold;
+
+}
+/* 
+* Receives character from the other funkit. Makes sure it passes checks then sends back it's own character.
+* Returns the other Funkit's character.
+* Takes in the player's character.
+*/
+char GetChar(char character, char receivedCharacter, int isAnimating)
+{
+	while (1) {
+		// Playing the cool isAnimating for the lock in
+		while (!isAnimating) {
+		    isAnimating = RollFillGTS();
+		}
+
+		// The real start to the previous while loop
+		tinygl_update();
+
+		if (ir_uart_read_ready_p()) {
+		    receivedCharacter = ir_uart_getc();
+		}
+
+		// This checks if the letter has been received and if it is of the correct type
+		// Also for later it checks if you both got the same thing
+		if ((receivedCharacter == 'G' || receivedCharacter == 'T' || receivedCharacter == 'S') && TCNT1 > WAIT_TIME)  {
+		    ir_uart_putc(character);
+		    ClearBoard();
+		    tinygl_clear();
+		    tinygl_update();
+		    RollDel();
+		    break;
+		}
+
+		navswitch_update();
+
+		if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
+		    ir_uart_putc(character);
+		}
+	}
+	return receivedCharacter;
+
+}
+
+
+
+
 /*
  * What runs the game
  */
@@ -71,6 +148,7 @@ int GTS_Game(void)
         receivedCharacter = '0';
 
 
+<<<<<<< HEAD
 
 
 
@@ -81,40 +159,13 @@ int GTS_Game(void)
 
 
 
+=======
+>>>>>>> 9f1cfa702872914bf01b6b97629045d5bdfa3722
         // Return received character after the loop breaks
 
         // Waits for the letter from the other UCFK4 to be sent while also sending its own letter
-        TCNT1 = 0;
-        while (1) {
-            // Playing the cool isAnimating for the lock in
-            while (!isAnimating) {
-                isAnimating = RollFillGTS();
-            }
-
-            // The real start to the previous while loop
-            tinygl_update();
-
-            if (ir_uart_read_ready_p()) {
-                receivedCharacter = ir_uart_getc();
-            }
-
-            // This checks if the letter has been received and if it is of the correct type
-            // Also for later it checks if you both got the same thing
-            if ((receivedCharacter == 'G' || receivedCharacter == 'T' || receivedCharacter == 'S') && TCNT1 > WAIT_TIME)  {
-                ir_uart_putc(character);
-                ClearBoard();
-                tinygl_clear();
-                tinygl_update();
-                RollDel();
-                break;
-            }
-
-            navswitch_update();
-
-            if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
-                ir_uart_putc(character);
-            }
-        }
+        receivedCharacter = GetChar(character, receivedCharacter, isAnimating);
+        
 
         // This is all for setting up and checking who outCome
         // printing out either 'W' or 'L'
@@ -151,6 +202,7 @@ int GTS_Game(void)
 
             while (!isAnimating) {
                 isAnimating = RollFillGTS();
+<<<<<<< HEAD
                 //TCNT1 = 0;
             }
 
@@ -189,6 +241,15 @@ int GTS_Game(void)
             }
             */
 
+=======
+                TCNT1 = 0;
+            }
+
+            // The real start to the previous while loop
+            tinygl_update();
+            OtherGold = ' ';
+            OtherGold = GetGold(Gold, OtherGold);
+>>>>>>> 9f1cfa702872914bf01b6b97629045d5bdfa3722
 
 
             if (receivedCharacter == 'S' && character != 'S') {
