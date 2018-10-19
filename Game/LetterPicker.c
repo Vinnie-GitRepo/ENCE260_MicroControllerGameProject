@@ -6,18 +6,15 @@
 # Last Modified: 17 OCT 2018
 ***********************************************************************/
 
-#include "LetterPicker.h"
 #include "system.h"
 #include "pacer.h"
 #include "navswitch.h"
-#include "ir_uart.h"
 #include "tinygl.h"
 #include "pio.h"
-#include "../fonts/font3x5_1.h"
 #include "Tables.h"
 #include "Animations.h"
 #include "Starter.h"
-
+#include "LetterPicker.h"
 
 
 /*

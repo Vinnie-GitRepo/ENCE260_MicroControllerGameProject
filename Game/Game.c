@@ -29,16 +29,16 @@ int main(void)
     MenuText_init();
     navswitch_init();
 
-    int game_running = 0;
+    int gameRunning = 0;
     int isAnimating = 0;
-    
+
 
     while (1) {
-	tinygl_text(" GOLD TRAP STEAL!");
-	isAnimating = 0;
-	game_running = 0;
+    tinygl_text(" GOLD TRAP STEAL!");
+    isAnimating = 0;
+    gameRunning = 0;
         while (1) {
-            game_running = 0;
+            gameRunning = 0;
             tinygl_update();
             navswitch_update();
 
@@ -53,8 +53,8 @@ int main(void)
         }
 
 
-        while (!game_running) {
-            game_running = GTS_Game();
+        while (!gameRunning) {
+            gameRunning = GTS_Game();
         }
 
     }

@@ -16,6 +16,7 @@
 #include "Tables.h"
 #include "Animations.h"
 #include "LetterPicker.h"
+#include "NavswitchSelections.h"
 #include "Starter.h"
 
 #define PACER_RATE 3000
@@ -53,8 +54,6 @@ int GTS_Game(void)
 
 
     navswitch_init();
-    int navswitch_val = 0;
-
     pacer_init(PACER_RATE);
 
 
@@ -66,49 +65,10 @@ int GTS_Game(void)
         // Sets the waiting time for anything tinygl related
         OneText_init();
 
-        navswitch_val = 0;
         character = 'G';
         Won = 5;
 
-
-
-
-
-
-
-
-
-        // Loop which continues until a choice has been made via the navswitch
-        while (1) {
-            // Wait times for updates
-            pacer_wait();
-            tinygl_update();
-            navswitch_update();
-            display_character(character);
-
-            // setting up to go up characters and down to go down characters
-            if (navswitch_push_event_p(NAVSWITCH_NORTH)) {
-                navswitch_val = (navswitch_val + 1) % 3;
-            }
-
-            if (navswitch_push_event_p(NAVSWITCH_SOUTH)) {
-                navswitch_val = (navswitch_val - 1) % 3;
-                if (navswitch_val == 0) {
-                    navswitch_val = 3;
-                }
-            }
-
-            // Sets the selected letter, clearing the board from all presets for the isAnimatings
-            if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
-                ClearBoard();
-                tinygl_clear();
-                tinygl_update();
-                break;
-            }
-
-            // Gets the character corresponding to the value
-            character = GetGTS(navswitch_val);
-        }
+        character = getSelectedChar();
 
         isAnimating = 0;
         receivedCharacter = '0';
@@ -126,7 +86,7 @@ int GTS_Game(void)
 
 
 
-
+        // Return received character after the loop breaks
 
         // Waits for the letter from the other UCFK4 to be sent while also sending its own letter
         TCNT1 = 0;
@@ -168,15 +128,15 @@ int GTS_Game(void)
         tinygl_update();
         RollDel();
         Won = determineRoundOutcome(character, receivedCharacter);
+        // if(Won == 3 || Won == -1) {
+        //      ENDME = 1;
+        // }
         if(character == 'G') {
             Gold += 1;
         }
         if(receivedCharacter == 'G') {
             OtherGold += 1;
         }
-
-        // Resetting Timer
-
 
 
 
@@ -200,7 +160,11 @@ int GTS_Game(void)
         // This loop just needs to be there for the messages to play there full way through
         isAnimating = 0;
 
+        // Can make this run with a bool that gets ended by the below break conditional (that will change)
         while (1) {
+
+
+
             while (!isAnimating) {
                 isAnimating = RollFillGTS();
                 if ((Won == -1) || (Won == 3)) {
@@ -212,11 +176,19 @@ int GTS_Game(void)
                 TCNT1 = 0;
             }
 
+
+            //Checks if you lost via trapsteal, ends game
+            // Can make this return a loop ending bool
             if ((Won == -1) || (Won == 3)) {
                 ClearBoard();
                 tinygl_clear();
                 break;
             }
+
+
+
+
+            // COULD BREAK THIS INTO A FUNCTION RETURNING OTHERGOLD
 
             // The real start to the previous while loop
             tinygl_update();
@@ -248,9 +220,6 @@ int GTS_Game(void)
 
 
 
-
-
-
             PORTC &= ~(1 <<2);
             ir_uart_putc(Gold);
 
@@ -272,6 +241,10 @@ int GTS_Game(void)
 
             break;
         }
+
+
+
+
 
         if ((Won == -1) || (Won == 3)) {
             ClearBoard();
