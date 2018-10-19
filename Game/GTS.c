@@ -2,7 +2,7 @@
 # File:          GTS.c
 # Group:         417
 # Authors:       Robert Condon (rtc33), Vinnie Jamieson (vjj14)
-# Description:   Module for our assignment's Gold Trap Steal game
+# Description:   Module for our assignment's playerGold Trap Steal game
 # Last Modified: 17 OCT 2018
 ***********************************************************************/
 
@@ -24,80 +24,82 @@
 #define PLAYER_TRAPPED -1
 #define WAIT_TIME 50
 
-/* 
-* Receives gold from the other funkit. Makes sure it passes checks then sends back it's own gold.
-* Returns the other Funkit's gold.
-* Takes in the player's gold.
+
+/*
+* Receives playerGold from the other funkit. Makes sure it passes checks then sends back it's own playerGold.
+* Returns the other Funkit's playerGold.
+* Takes in the player's playerGold.
 */
-
-char GetGold(char Gold, char OtherGold)
+char GetGold(char playerGold, char opponentGold)
 {
-	while (1) {
-		navswitch_update();
-		tinygl_update();
+    while (1) {
+        navswitch_update();
+        tinygl_update();
 
-		if (ir_uart_read_ready_p()) {
-		    OtherGold = ir_uart_getc();
-		}
+        if (ir_uart_read_ready_p()) {
+            opponentGold = ir_uart_getc();
+        }
 
-		if ((OtherGold >= '0' && OtherGold < '6') && TCNT1 > WAIT_TIME) {
-		    ir_uart_putc(Gold);
-		    ClearBoard();
-		    tinygl_clear();
-		    tinygl_update();
-		    RollDel();
-		    TCNT1 = 50;
-		    break;
-		}
+        if ((opponentGold >= '0' && opponentGold < '6') && TCNT1 > WAIT_TIME) {
+            ir_uart_putc(playerGold);
+            ClearBoard();
+            tinygl_clear();
+            tinygl_update();
+            RollDel();
+            TCNT1 = 50;
+            break;
+        }
 
-		if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
-		    ir_uart_putc(Gold);
-		}
-	}
-	return OtherGold;
+        if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
+            ir_uart_putc(playerGold);
+        }
+    }
+    return opponentGold;
 
 }
-/* 
+
+
+
+/*
 * Receives character from the other funkit. Makes sure it passes checks then sends back it's own character.
 * Returns the other Funkit's character.
 * Takes in the player's character.
 */
 char GetChar(char character, char receivedCharacter, int isAnimating)
 {
-	while (1) {
-		// Playing the cool isAnimating for the lock in
-		while (!isAnimating) {
-		    isAnimating = RollFillGTS();
-		}
+    while (1) {
+        // Playing the cool isAnimating for the lock in
+        while (!isAnimating) {
+            isAnimating = RollFillGTS();
+        }
 
-		// The real start to the previous while loop
-		tinygl_update();
+        // The real start to the previous while loop
+        tinygl_update();
 
-		if (ir_uart_read_ready_p()) {
-		    receivedCharacter = ir_uart_getc();
-		}
+        if (ir_uart_read_ready_p()) {
+            receivedCharacter = ir_uart_getc();
+        }
 
-		// This checks if the letter has been received and if it is of the correct type
-		// Also for later it checks if you both got the same thing
-		if ((receivedCharacter == 'G' || receivedCharacter == 'T' || receivedCharacter == 'S') && TCNT1 > WAIT_TIME)  {
-		    ir_uart_putc(character);
-		    ClearBoard();
-		    tinygl_clear();
-		    tinygl_update();
-		    RollDel();
-		    break;
-		}
+        // This checks if the letter has been received and if it is of the correct type
+        // Also for later it checks if you both got the same thing
+        if ((receivedCharacter == 'G' || receivedCharacter == 'T' || receivedCharacter == 'S') && TCNT1 > WAIT_TIME)  {
+            ir_uart_putc(character);
+            ClearBoard();
+            tinygl_clear();
+            tinygl_update();
+            RollDel();
+            break;
+        }
 
-		navswitch_update();
+        navswitch_update();
 
-		if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
-		    ir_uart_putc(character);
-		}
-	}
-	return receivedCharacter;
+        if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
+            ir_uart_putc(character);
+        }
+    }
+    return receivedCharacter;
 
 }
-
 
 
 
@@ -106,13 +108,13 @@ char GetChar(char character, char receivedCharacter, int isAnimating)
  */
 int GTS_Game(void)
 {
-    char Gold = '0';
-    char OtherGold = '0';
+    char playerGold = '0';
+    char opponentGold = '0';
 
     // Start timers. Well mainly TCNT1
-    TCCR1A = 0x00;
+    /*TCCR1A = 0x00;
     TCCR1B = 0x05;
-    TCCR1C = 0x00;
+    TCCR1C = 0x00;*/
 
     // The RPS character that displays on the LED screen while also being what is sent to the other UCFK4
     char character = 'G';
@@ -134,7 +136,7 @@ int GTS_Game(void)
 
 
 
-    while ((outCome != PLAYER_TRAPPED) && (outCome != OPPONENT_TRAPPED) && (Gold < '5') && (OtherGold < '5')) {
+    while ((outCome != PLAYER_TRAPPED) && (outCome != OPPONENT_TRAPPED) && (playerGold < '5') && (opponentGold < '5')) {
         // System initialised
         system_init();
 
@@ -148,24 +150,11 @@ int GTS_Game(void)
         receivedCharacter = '0';
 
 
-<<<<<<< HEAD
-
-
-
-
-
-
-
-
-
-
-=======
->>>>>>> 9f1cfa702872914bf01b6b97629045d5bdfa3722
         // Return received character after the loop breaks
 
         // Waits for the letter from the other UCFK4 to be sent while also sending its own letter
         receivedCharacter = GetChar(character, receivedCharacter, isAnimating);
-        
+
 
         // This is all for setting up and checking who outCome
         // printing out either 'W' or 'L'
@@ -174,90 +163,41 @@ int GTS_Game(void)
         tinygl_update();
         RollDel();
         outCome = determineRoundOutcome(character, receivedCharacter);
+
         // If you got trapped or trapped the other player the game ends here.
         if(outCome == OPPONENT_TRAPPED || outCome == PLAYER_TRAPPED) {
              break;
         }
 
-        // Puts up gold if you picked gold. Does the same for your tally of the other persons gold.
+        // Puts up playerGold if you picked playerGold. Does the same for your tally of the other persons playerGold.
         if(character == 'G') {
-            Gold += 1;
+            playerGold += 1;
         }
         if(receivedCharacter == 'G') {
-            OtherGold += 1;
+            opponentGold += 1;
         }
-
-
-
-
-
 
         // This loop just needs to be there for the messages to play there full way through
         isAnimating = 0;
 
         // Can make this run with a bool that gets ended by the below break conditional (that will change)
         while (1) {
-
-
-
             while (!isAnimating) {
                 isAnimating = RollFillGTS();
-<<<<<<< HEAD
-                //TCNT1 = 0;
-            }
-
-
-            OtherGold = getOtherGold(Gold);
-
-            /
-            // COULD BREAK THIS INTO A FUNCTION RETURNING OTHERGOLD
-
-            // The real start to the previous while loop
-            tinygl_update();
-            OtherGold = ' ';
-
-
-            while (1) {
-                navswitch_update();
-                tinygl_update();
-
-                if (ir_uart_read_ready_p()) {
-                    OtherGold = ir_uart_getc();
-                }
-
-                if ((OtherGold >= '0' && OtherGold < '6') && TCNT1 > WAIT_TIME) {
-                    ir_uart_putc(Gold);
-                    ClearBoard();
-                    tinygl_clear();
-                    tinygl_update();
-                    RollDel();
-                    TCNT1 = 50;
-                    break;
-                }
-
-                if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
-                    ir_uart_putc(Gold);
-                }
-            }
-            */
-
-=======
                 TCNT1 = 0;
             }
 
             // The real start to the previous while loop
             tinygl_update();
-            OtherGold = ' ';
-            OtherGold = GetGold(Gold, OtherGold);
->>>>>>> 9f1cfa702872914bf01b6b97629045d5bdfa3722
-
+            opponentGold = ' ';
+            opponentGold = GetGold(playerGold, opponentGold);
 
             if (receivedCharacter == 'S' && character != 'S') {
-                OtherGold += CheapInt(Gold);
-                Gold = '0';
+                opponentGold += CheapInt(playerGold);
+                playerGold = '0';
             } else if (character == 'S' && receivedCharacter != 'S'){
-                Gold += CheapInt(OtherGold);
-                OtherGold = '0';
+                playerGold += CheapInt(opponentGold);
+                opponentGold = '0';
             }
 
             // This checks if the letter has been resived and if it is of the correct type.
@@ -265,24 +205,19 @@ int GTS_Game(void)
             isAnimating = 0;
             navswitch_update();
             while (!isAnimating){
-                isAnimating = DisplayGold(Gold);
+                isAnimating = DisplayGold(playerGold);
             }
 
             break;
         }
 
-
-
         ClearBoard();
-
     }
-
-
-
 
     isAnimating = 0;
     while(!isAnimating) {
-        isAnimating = DisplayWinnerGTS(outCome, Gold, OtherGold);
+        isAnimating = DisplayWinnerGTS(outCome, playerGold, opponentGold);
     }
+
     return 1;
 }

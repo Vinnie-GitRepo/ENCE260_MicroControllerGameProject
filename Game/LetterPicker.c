@@ -22,10 +22,6 @@
  */
 int DisplayInfo(void)
 {
-
-    TCCR1A = 0x00;
-    TCCR1B = 0x05;
-    TCCR1C = 0x00;
     system_init();
     MenuText_init();
 
@@ -67,11 +63,6 @@ int DisplayGold(char Gold)
     system_init();
     OneText_init();
 
-    TCCR1A = 0x00;
-    TCCR1B = 0x05;
-    TCCR1C = 0x00;
-
-
     TCNT1 = 0;
     while (1) {
         if (TCNT1 < 10000) {
@@ -99,7 +90,6 @@ int DisplayGold(char Gold)
  */
 int DisplayWinnerGTS(char Wins, char Gold, char OtherGold)
 {
-
     system_init();
 
     char* s;

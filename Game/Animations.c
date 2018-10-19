@@ -107,13 +107,8 @@ int RollFillGTS(void)
     tinygl_clear();
     tinygl_point_t pos;
 
-    TCCR1A = 0x00;
-    TCCR1B = 0x05;
-    TCCR1C = 0x00;
-
     pos.x = 0;
     pos.y = 0;
-
 
     while (1) {
         if (TCNT1 > 300) {
@@ -150,7 +145,6 @@ int RollDel(void)
 
     pos.x = 0;
     pos.y = 0;
-
 
     while (1) {
         tinygl_update();
