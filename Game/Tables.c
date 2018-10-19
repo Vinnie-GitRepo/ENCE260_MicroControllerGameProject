@@ -9,6 +9,12 @@
 #include "Tables.h"
 #include "tinygl.h"
 
+#define STOLEN_GOLD 0
+#define OPPONENT_TRAPPED 3
+#define PLAYER_TRAPPED -1
+#define NOTHING_HAPPENED 1
+
+
 
 /*
  * Gets the selection for the main menu, from an int mod 3
@@ -101,37 +107,33 @@ int CheapInt(char Gold) {
 int determineRoundOutcome(char character, char received_char)
 {
     // Defaults to 1 if both players did gold
-    int won = 1;
+    int outCome = NOTHING_HAPPENED;
     switch (character)
     {
         // If you went gold and they steal, you lose the round
         case 'G':
             if (received_char == 'S') {
-                won = 0;
+                outCome = STOLEN_GOLD;
             }
             break;
 
         // If you went Trap and they went steal, you win immediately
         case 'T':
             if (received_char == 'S') {
-                won = 3;
+                outCome = OPPONENT_TRAPPED;
             }
             break;
 
         // If you went Steal and they went trap, you lose immediately
         case 'S':
             if (received_char == 'T') {
-                won = -1;
-            }
-            if (received_char == 'S') {
-                won = 2;
+                outCome = PLAYER_TRAPPED;
             }
             break;
     }
 
-    return won;
+    return outCome;
 }
-
 
 
 

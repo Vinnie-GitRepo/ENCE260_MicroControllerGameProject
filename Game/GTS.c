@@ -20,8 +20,9 @@
 #include "Starter.h"
 
 #define PACER_RATE 3000
-#define MESSAGE_RATE 200
-
+#define OPPONENT_TRAPPED 3
+#define PLAYER_TRAPPED -1
+#define WAIT_TIME 50
 
 /*
  * What runs the game
@@ -42,8 +43,8 @@ int GTS_Game(void)
     // The char that waits for then holds the character sent by the other UCFK4
     char receivedCharacter = '0';
 
-    // 1 is if this UCFK4 won and if it ends with 0, then UCFK4 lost
-    int Won = 0;
+    // 1 is if this UCFK4 outCome and if it ends with 0, then UCFK4 lost
+    int outCome = 0;
 
     // 0 if the isAnimating is still going, 1 for when it finishes
     int isAnimating = 0;
@@ -51,14 +52,12 @@ int GTS_Game(void)
     // Starts up the infrared reader and sender
     ir_uart_init();
 
-
-
     navswitch_init();
     pacer_init(PACER_RATE);
 
 
     //
-    while ((Won != -1) && (Won != 3) && (Gold < '5') && (OtherGold < '5')) {
+    while ((outCome != PLAYER_TRAPPED) && (outCome != OPPONENT_TRAPPED) && (Gold < '5') && (OtherGold < '5')) {
         // System initialised
         system_init();
 
@@ -66,10 +65,8 @@ int GTS_Game(void)
         OneText_init();
 
         character = 'G';
-        Won = 5;
-
+        outCome = 5;
         character = getSelectedChar();
-
         isAnimating = 0;
         receivedCharacter = '0';
 
@@ -105,7 +102,7 @@ int GTS_Game(void)
 
             // This checks if the letter has been received and if it is of the correct type
             // Also for later it checks if you both got the same thing
-            if ((receivedCharacter == 'G' || receivedCharacter == 'T' || receivedCharacter == 'S') && TCNT1 > 5)  {
+            if ((receivedCharacter == 'G' || receivedCharacter == 'T' || receivedCharacter == 'S') && TCNT1 > WAIT_TIME)  {
                 ir_uart_putc(character);
                 ClearBoard();
                 tinygl_clear();
@@ -121,36 +118,25 @@ int GTS_Game(void)
             }
         }
 
-        // This is all for setting up and checking who won
+        // This is all for setting up and checking who outCome
         // printing out either 'W' or 'L'
         ClearBoard();
         tinygl_clear();
         tinygl_update();
         RollDel();
-        Won = determineRoundOutcome(character, receivedCharacter);
-        // if(Won == 3 || Won == -1) {
-        //      ENDME = 1;
-        // }
+        outCome = determineRoundOutcome(character, receivedCharacter);
+		// If you got trapped or trapped the other player the game ends here.
+        if(outCome == OPPONENT_TRAPPED || outCome == PLAYER_TRAPPED) {
+             break;
+        }
+
+		// Puts up gold if you picked gold. Does the same for your tally of the other persons gold.
         if(character == 'G') {
             Gold += 1;
         }
         if(receivedCharacter == 'G') {
             OtherGold += 1;
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -167,22 +153,13 @@ int GTS_Game(void)
 
             while (!isAnimating) {
                 isAnimating = RollFillGTS();
-                if ((Won == -1) || (Won == 3)) {
+                if ((outCome == PLAYER_TRAPPED) || (outCome == OPPONENT_TRAPPED)) {
                     ClearBoard();
                     tinygl_clear();
                     break;
                 }
 
                 TCNT1 = 0;
-            }
-
-
-            //Checks if you lost via trapsteal, ends game
-            // Can make this return a loop ending bool
-            if ((Won == -1) || (Won == 3)) {
-                ClearBoard();
-                tinygl_clear();
-                break;
             }
 
 
@@ -194,7 +171,6 @@ int GTS_Game(void)
             tinygl_update();
             OtherGold = ' ';
             while (1) {
-                PORTC |= (1 << 2);
                 navswitch_update();
                 tinygl_update();
 
@@ -202,7 +178,7 @@ int GTS_Game(void)
                     OtherGold = ir_uart_getc();
                 }
 
-                if ((OtherGold >= '0' && OtherGold < '6') && TCNT1 > 50) {
+                if ((OtherGold >= '0' && OtherGold < '6') && TCNT1 > WAIT_TIME) {
                     ir_uart_putc(Gold);
                     ClearBoard();
                     tinygl_clear();
@@ -218,10 +194,6 @@ int GTS_Game(void)
             }
 
 
-
-
-            PORTC &= ~(1 <<2);
-            ir_uart_putc(Gold);
 
             if (receivedCharacter == 'S' && character != 'S') {
                 OtherGold += CheapInt(Gold);
@@ -244,14 +216,6 @@ int GTS_Game(void)
 
 
 
-
-
-        if ((Won == -1) || (Won == 3)) {
-            ClearBoard();
-            tinygl_clear();
-            break;
-        }
-
         ClearBoard();
 
     }
@@ -261,7 +225,7 @@ int GTS_Game(void)
 
     isAnimating = 0;
     while(!isAnimating) {
-        isAnimating = DisplayWinnerGTS(Won, Gold, OtherGold);
+        isAnimating = DisplayWinnerGTS(outCome, Gold, OtherGold);
     }
     return 1;
 }
