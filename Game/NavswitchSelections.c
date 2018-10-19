@@ -44,7 +44,7 @@ char getSelectedChar(void)
             }
         }
 
-        // Sets the selected letter, clearing the board
+        // Sets the selected letter upon pressing, clearing the board
         if (navswitch_push_event_p(NAVSWITCH_PUSH)) {
             ClearBoard();
             tinygl_clear();
@@ -57,3 +57,5 @@ char getSelectedChar(void)
 
     return returnChar;
 }
+
+

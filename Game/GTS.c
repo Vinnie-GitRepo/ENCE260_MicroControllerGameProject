@@ -56,7 +56,7 @@ int GTS_Game(void)
     pacer_init(PACER_RATE);
 
 
-    //
+
     while ((outCome != PLAYER_TRAPPED) && (outCome != OPPONENT_TRAPPED) && (Gold < '5') && (OtherGold < '5')) {
         // System initialised
         system_init();
@@ -69,8 +69,6 @@ int GTS_Game(void)
         character = getSelectedChar();
         isAnimating = 0;
         receivedCharacter = '0';
-
-
 
 
 
@@ -125,12 +123,12 @@ int GTS_Game(void)
         tinygl_update();
         RollDel();
         outCome = determineRoundOutcome(character, receivedCharacter);
-		// If you got trapped or trapped the other player the game ends here.
+        // If you got trapped or trapped the other player the game ends here.
         if(outCome == OPPONENT_TRAPPED || outCome == PLAYER_TRAPPED) {
              break;
         }
 
-		// Puts up gold if you picked gold. Does the same for your tally of the other persons gold.
+        // Puts up gold if you picked gold. Does the same for your tally of the other persons gold.
         if(character == 'G') {
             Gold += 1;
         }
@@ -153,23 +151,20 @@ int GTS_Game(void)
 
             while (!isAnimating) {
                 isAnimating = RollFillGTS();
-                if ((outCome == PLAYER_TRAPPED) || (outCome == OPPONENT_TRAPPED)) {
-                    ClearBoard();
-                    tinygl_clear();
-                    break;
-                }
-
-                TCNT1 = 0;
+                //TCNT1 = 0;
             }
 
 
+            OtherGold = getOtherGold(Gold);
 
-
+            /
             // COULD BREAK THIS INTO A FUNCTION RETURNING OTHERGOLD
 
             // The real start to the previous while loop
             tinygl_update();
             OtherGold = ' ';
+
+
             while (1) {
                 navswitch_update();
                 tinygl_update();
@@ -192,6 +187,7 @@ int GTS_Game(void)
                     ir_uart_putc(Gold);
                 }
             }
+            */
 
 
 
